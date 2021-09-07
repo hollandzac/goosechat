@@ -9,11 +9,12 @@
 
 # dependencies
 /node_modules
+/server/node_modules
 
 # profiling files
 chrome-profiler-events*.json
 
-# IDEs and editors
+# IDEs and editors`
 /.idea
 .project
 .classpath
