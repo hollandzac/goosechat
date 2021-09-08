@@ -13,7 +13,7 @@ import { GroupsComponent } from './groups/groups.component';
     AppComponent,
     LoginComponent,
     NavbarComponent,
-    GroupsComponent
+    GroupsComponent,
   ],
   imports: [
     BrowserModule,

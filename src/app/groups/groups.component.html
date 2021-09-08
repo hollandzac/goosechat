@@ -18,30 +18,49 @@
 
 <ul class="list-group mt-3" *ngFor="let group of storageService.groups">
   <li class="list-group-item">
-    {{group.name}}
-      <div>
-        <form>
-            <div class="form-group">
-              <label for="groupName">Channel Name</label>
-              <input
-                type="text"
-                class="form-control"
-                [(ngModel)]="newChannelName"
-                name="newChannelName"
-                placeholder="Enter new channel name"
-              />
-              <label *ngIf="newChannelErr">Error: Channel already exists in this group</label>
-            </div>
-            <button type="submit" class="btn btn-primary mt-3" (click)="addNewChannel(group)">
-              Submit
-            </button>
-          </form>
-      </div>
+    {{ group.name }}
+    <button
+      type="button"
+      class="btn btn-danger"
+      (click)="removeGroup(group)"
+    >
+      Delete
+    </button>
+    <div>
+      <form>
+        <div class="form-group">
+          <label for="groupName">Channel Name</label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="newChannelName"
+            name="newChannelName"
+            placeholder="Enter new channel name"
+          />
+          <label *ngIf="newChannelErr"
+            >Error: Channel already exists in this group</label
+          >
+        </div>
+        <button
+          type="submit"
+          class="btn btn-primary mt-3"
+          (click)="addNewChannel(group)"
+        >
+          Submit
+        </button>
+      </form>
+    </div>
     <ul class="list-group m-2" *ngFor="let channel of group.channels">
       <li class="list-group-item">
-          {{channel.name}}
-          <button type="button" class="btn btn-danger" (click)="removeChannel(group, channel)">Delete</button>
-        </li>
+        {{ channel.name }}
+        <button
+          type="button"
+          class="btn btn-danger"
+          (click)="removeChannel(group, channel)"
+        >
+          Delete
+        </button>
+      </li>
     </ul>
   </li>
 </ul>
