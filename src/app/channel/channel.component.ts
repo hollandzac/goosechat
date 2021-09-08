@@ -33,6 +33,7 @@ export class ChannelComponent implements OnInit {
   }
   addNewMessage(){
     this.channel.messages.push(`${this.auth.currentUser.username}: ${this.newMessage}`)
+    this.newMessage = ""
 
   }
 
