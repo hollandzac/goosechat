@@ -9,8 +9,11 @@ export enum Role {
 export interface Channel {
   name: string;
   users: Array<number>;
+  messages: Array<string>
 }
-export interface Group extends Channel {
+export interface Group{
+  name: string
+  users: Array<number>
   channels: Array<Channel>;
 }
 
@@ -51,12 +54,9 @@ export class StorageService {
     localStorage.setItem('users', JSON.stringify(this.users));
   }
 
-  getUser(username: string): User | string {
+  getUser(username: string): User | undefined{
     let user = this.users.find((user) => user.username === username);
-    if (user) {
-      return user;
-    }
-    return '';
+    return user
   }
 
   newUser(user: User) {
@@ -71,11 +71,21 @@ export class StorageService {
       let newChannel: Channel = {
         name: channelName,
         users: [],
+        messages: []
       };
       group.channels.push(newChannel);
       return false;
     }
     return true;
+  }
+  getChannel(groupName: string, channelName: string): Channel{
+    let idxGr = this.groups.findIndex(
+      (group) => group.name === groupName
+    );
+    let idxCh = this.groups[idxGr].channels.findIndex(
+      (channel) => channel.name === channelName
+    );
+    return this.groups[idxCh].channels[idxGr]
   }
   removeChannel(channel: Channel, group: Group) {
     let idxCh = group.channels.indexOf(channel);

@@ -1,66 +1,81 @@
-<form>
-  <div class="form-group">
-    <label for="groupName">Group Name</label>
-    <input
-      type="text"
-      class="form-control"
-      id="GroupName"
-      [(ngModel)]="newGroupName"
-      name="newGroupName"
-      placeholder="Enter new group name"
-    />
-    <label *ngIf="newGroupError">Error: Group already exists</label>
-  </div>
-  <button type="submit" class="btn btn-primary mt-3" (click)="addNewGroup()">
-    Submit
-  </button>
-</form>
-
-<ul class="list-group mt-3" *ngFor="let group of storageService.groups">
-  <li class="list-group-item">
-    {{ group.name }}
-    <button
-      type="button"
-      class="btn btn-danger"
-      (click)="removeGroup(group)"
-    >
-      Delete
-    </button>
-    <div>
-      <form>
-        <div class="form-group">
-          <label for="groupName">Channel Name</label>
-          <input
-            type="text"
-            class="form-control"
-            [(ngModel)]="newChannelName"
-            name="newChannelName"
-            placeholder="Enter new channel name"
-          />
-          <label *ngIf="newChannelErr"
-            >Error: Channel already exists in this group</label
-          >
-        </div>
-        <button
-          type="submit"
-          class="btn btn-primary mt-3"
-          (click)="addNewChannel(group)"
-        >
-          Submit
-        </button>
-      </form>
+<form class="justify-content-center">
+  <label for="groupName" style="font-weight: bolder">New Group</label>
+  <div class="row">
+    <div class="col">
+      <input
+        type="text"
+        class="form-control"
+        id="GroupName"
+        [(ngModel)]="newGroupName"
+        name="newGroupName"
+        placeholder="Enter new group name"
+      />
     </div>
-    <ul class="list-group m-2" *ngFor="let channel of group.channels">
-      <li class="list-group-item">
-        {{ channel.name }}
-        <button
-          type="button"
-          class="btn btn-danger"
-          (click)="removeChannel(group, channel)"
+    <div class="col">
+      <button type="submit" class="btn btn-primary" (click)="addNewGroup()">
+        Submit
+      </button>
+    </div>
+  </div>
+  <label *ngIf="newGroupError">Error: Group already exists</label>
+</form>
+<div class="row">
+  <ul class="list-group mt-3" *ngFor="let group of storageService.groups">
+    <li class="list-group-item">
+      <div class="row">
+        <div class="m-x-3 col-sm-auto">
+          <h3>{{ group.name }}</h3>
+        </div>
+        <div class="col-sm-1">
+          <button
+            type="button"
+            class="p-x-2 btn btn-danger"
+            (click)="removeGroup(group)"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+      <form class="form-control">
+        <label for="groupName" style="font-weight: bolder">New Channel</label>
+        <div class="row">
+          <div class="col">
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="newChannelName"
+              name="newChannelName"
+              placeholder="Enter new channel name"
+            />
+          </div>
+          <div class="col">
+            <button
+              type="submit"
+              class="btn btn-primary"
+              (click)="addNewChannel(group)"
+            >
+              Submit
+            </button>
+          </div>
+        </div>
+        <label *ngIf="newChannelErr"
+          >Error: Channel already exists in this group</label
         >
-          Delete
-        </button>
-      </li>
-    </ul>
-  </li>
-</ul>
+      </form>
+      <ul class="list-group m-2" *ngFor="let channel of group.channels">
+        <li class="list-group-item">
+          <a [routerLink]="['/channel', group.name, channel.name]" class="mt-pt-5">{{
+            channel.name
+          }}</a>
+          <button
+            type="button"
+            class="mx-3 btn btn-danger"
+            (click)="removeChannel(group, channel)"
+          >
+            Delete
+          </button>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>

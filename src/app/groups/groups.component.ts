@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { StorageService, Group, Role, Channel, User } from '../services/storage.service';
+import { StorageService, Group, Role, Channel } from '../services/storage.service';
 
 @Component({
   selector: 'app-groups',
@@ -13,7 +13,6 @@ export class GroupsComponent implements OnInit {
   newGroupError: boolean = false
   newChannelErr: boolean = false
 
-  currentUser: User = {}
 
   constructor(public storageService: StorageService) {
 

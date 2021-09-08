@@ -7,6 +7,8 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { GroupsComponent } from './groups/groups.component';
+import { ChannelComponent } from './channel/channel.component';
+import { GroupDirective } from './group.directive';
 
 @NgModule({
   declarations: [
@@ -14,6 +16,8 @@ import { GroupsComponent } from './groups/groups.component';
     LoginComponent,
     NavbarComponent,
     GroupsComponent,
+    ChannelComponent,
+    GroupDirective,
   ],
   imports: [
     BrowserModule,

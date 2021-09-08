@@ -1,0 +1,23 @@
+<div class="pt-5">
+  <h3>{{channel.name}}</h3>
+  <ul class="list-group" *ngFor="let message of channel.messages">
+    <li class="">{{ message }}</li>
+  </ul>
+  <form class="form-control">
+    <span>
+      <label for="message" class="form-control">New Message</label>
+      <input
+        type="text"
+        [(ngModel)]="newMessage"
+        name="newMessage"
+        id="message"
+        placeholder="Enter message"
+      />
+      <button
+        type="submit"
+        class="btn btn-primary mt-3"
+        (click)="addNewMessage()"
+      ></button>
+    </span>
+  </form>
+</div>
