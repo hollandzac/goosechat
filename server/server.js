@@ -1,8 +1,11 @@
 import express from "express";
 import cors from "cors";
+import { createServer } from "http";
 import { Server } from "socket.io";
-import { connectToServer } from "./app.js";
+import { connectToServer, seed } from "./mongodb.js";
 import { router as groupsRouter } from "./api/groupRoutes.js";
+import { router as userRouter } from "./api/userRoutes.js";
+import { socketConnect } from "./socket.js";
 
 //Define server and databse
 const PORT = 3000;
@@ -10,8 +13,16 @@ const PORT = 3000;
 //setup express
 const app = express();
 
-//setup sockets
-const io = new Server();
+//Create http server
+const httpServer = createServer(app)
+
+//setup socket server
+const io = new Server(httpServer, {
+  cors: {
+    origin: "http://localhost:4200",
+    methods: ["GET", "POST"]
+  }
+});
 
 //databse globabl
 
@@ -30,8 +41,16 @@ connectToServer(function(err) {
   if (err) {
     console.error(err);
   }
+  seed()
+
   app.use("/api", groupsRouter);
-  app.listen(PORT, () => {
-    console.log("Connected on PORT:" + PORT);
-  });
+  app.use("/api", userRouter);
+  socketConnect(io, PORT)
+ 
+  httpServer.listen(PORT, () => {
+    console.log("Listening on PORT:" + PORT);
+  })
+  // app.listen(PORT, () => {
+  //   console.log("Connected on PORT:" + PORT);
+  // });
 });

@@ -24,8 +24,8 @@ export function getDb() {
 export async function seed(){
     await _db.dropDatabase()
     let usersColl = _db.collection('users')
-    let groupsColl = _db.collection('users')
-    let messagesColl = _db.collection('users')
+    let groupsColl = _db.collection('groups')
+    let messagesColl = _db.collection('messages')
 
     var _id1 = new ObjectId()
     let superAdmin = {
@@ -47,7 +47,7 @@ export async function seed(){
     await usersColl.insertOne(newUser)
 
     var _id3 = new ObjectId()
-    let newUser = {
+    newUser = {
         _id: _id3,
         name: "assistant",
         superAdmin: false,
@@ -56,7 +56,7 @@ export async function seed(){
 
     await usersColl.insertOne(newUser)
     var _id4 = new ObjectId()
-    let newUser = {
+    newUser = {
         _id: _id4,
         name: "Joe",
         superAdmin: false,
@@ -64,7 +64,7 @@ export async function seed(){
     }
     await usersColl.insertOne(newUser)
     
-    new channelId = new ObjectId()
+    let channelId = new ObjectId()
     let newChannel = {
         _id:channelId,
         name:"Main Channel",
@@ -73,7 +73,30 @@ export async function seed(){
 
     let newGroup = {
         groupName:"Main Group",
+        channels: [newChannel],
         users: [_id4, _id3],
         assistants: [_id3]
     }
+
+    await groupsColl.insertOne(newGroup)
+
+    let messageId = new ObjectId()
+    let newMessage = {
+        _id: messageId,
+        channelId: channelId,
+        senderId: _id4,
+        message: "WOW what a message"
+    }
+   await messagesColl.insertOne(newMessage)
+
+    messageId = new ObjectId()
+    newMessage = {
+        _id: messageId,
+        channelId: channelId,
+        senderId: _id2,
+        message: "WOW I know"
+    }
+
+    await messagesColl.insertOne(newMessage)
+
 }
