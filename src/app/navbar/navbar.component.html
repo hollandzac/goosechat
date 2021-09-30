@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
   <div class="container-fluid">
-    <img src="../../assets/goose.png" alt="gooselogo">
+    <img src="../../assets/goose.png" alt="gooselogo" />
     <button
       class="navbar-toggler"
       type="button"
@@ -17,21 +17,11 @@
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="#">Home</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" [routerLink]="" (click)="storeData()">Store</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" [routerLink]="" (click)="deleteData()">Delete</a>
-        </li>
       </ul>
       <form class="d-flex">
-        <a
-            class="nav-link"
-            [routerLink]=""
-            tabindex="-1"
-            (click)="logout()"
-            >Logout</a
-          >
+        <a class="nav-link" [routerLink]="" tabindex="-1" (click)="logout()"
+          >Logout</a
+        >
       </form>
     </div>
   </div>

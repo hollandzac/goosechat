@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Channel, StorageService } from '../services/storage.service';
 import { AuthenticationService } from '../services/authentication.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { io } from "socket.io-client";
+import { GroupDataService } from '../services/group-data.service';
 
 @Component({
   selector: 'app-channel',
@@ -10,31 +12,26 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class ChannelComponent implements OnInit {
   newMessage: string = ""
-  channel: Channel = {
-    name: "Default",
-    users: [],
-    messages: []
-  }
+ 
   
 
-  constructor(private route: Router,private activatedRoute: ActivatedRoute, private storage: StorageService, private auth: AuthenticationService) {}
+  constructor(private route: Router,private activatedRoute: ActivatedRoute, private groupsDataService: GroupDataService, private auth: AuthenticationService) {}
 
   ngOnInit(): void {
     const routeParams = this.activatedRoute.snapshot.paramMap
     const groupName = routeParams.get('groupName')
     const channelName = routeParams.get('channelName')
 
-    if(groupName && channelName){
-      this.channel = this.storage.getChannel(groupName, channelName)
-    }else{
-      this.route.navigateByUrl('/groups')
-    }
+  //   // if(groupName && channelName){
+  //   //   this.channel = this.storage.getChannel(groupName, channelName)
+  //   // }else{
+  //   //   this.route.navigateByUrl('/groups')
+  //   // }
   
-  }
-  addNewMessage(){
-    this.channel.messages.push(`${this.auth.currentUser.username}: ${this.newMessage}`)
-    this.newMessage = ""
-
+  // }
+  // addNewMessage(){
+  
+  // }
   }
 
 }

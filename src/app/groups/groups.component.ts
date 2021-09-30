@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { StorageService, Group, Role, Channel } from '../services/storage.service';
+import { GroupDataService, Group } from '../services/group-data.service';
+
 
 @Component({
   selector: 'app-groups',
@@ -7,33 +8,41 @@ import { StorageService, Group, Role, Channel } from '../services/storage.servic
   styleUrls: ['./groups.component.css']
 })
 export class GroupsComponent implements OnInit {
+  public groups:Array<Group> = []
+  public newGroupName: string = ""
+  public newDescription: string = ""
+  constructor(public groupsDataService: GroupDataService) {
 
-  newGroupName: string = ""
-  newChannelName: string = ""
-  newGroupError: boolean = false
-  newChannelErr: boolean = false
-
-
-  constructor(public storageService: StorageService) {
-
-   }
+  }
 
   ngOnInit(): void {
-    this.storageService.getData()
+    this.groupsDataService.getAllGroups().subscribe( groups => {
+      console.log(groups)
+      this.groups = groups
+    })
   }
+
   addNewGroup(){
-    this.newGroupError = this.storageService.newGroup(this.newGroupName)
-    this.newGroupName = ""
+    let newGroup: Group = {
+      groupName: this.newGroupName,
+      description: this.newDescription,
+      users: [],
+      channels: [],
+      assistants: []
+    }
+    this.groupsDataService.addGroup(newGroup).subscribe(() =>{
+      this.groups.push(newGroup)
+    })
   }
-  removeGroup(group: Group){
-    this.storageService.removeGroup(group)
-  }
-  addNewChannel(group: Group){
-    this.newChannelErr = this.storageService.newChannel(this.newChannelName, group)
-    this.newChannelName = ""
-  }
-  removeChannel(group: Group, channel: Channel){
-    this.storageService.removeChannel(channel, group)
-  }
+  // removeGroup(group: Group){
+  //   this.storageService.removeGroup(group)
+  // }
+  // addNewChannel(group: Group){
+  //   this.newChannelErr = this.storageService.newChannel(this.newChannelName, group)
+  //   this.newChannelName = ""
+  // }
+  // removeChannel(group: Group, channel: Channel){
+  //   this.storageService.removeChannel(channel, group)
+  // }
 
 }

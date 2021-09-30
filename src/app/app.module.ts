@@ -9,6 +9,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { GroupsComponent } from './groups/groups.component';
 import { ChannelComponent } from './channel/channel.component';
 import { GroupDirective } from './group.directive';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -16,13 +17,13 @@ import { GroupDirective } from './group.directive';
     LoginComponent,
     NavbarComponent,
     GroupsComponent,
-    ChannelComponent,
     GroupDirective,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -74,6 +74,7 @@ export async function seed(){
     let newGroup = {
         groupName:"Main Group",
         channels: [newChannel],
+        description: "This is the main group right here",
         users: [_id4, _id3],
         assistants: [_id3]
     }

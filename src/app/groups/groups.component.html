@@ -1,5 +1,27 @@
-<form class="justify-content-center">
-  <label for="groupName" style="font-weight: bolder">New Group</label>
+<div class="justify-content-center">
+  <form class="py-2">
+    <!-- Add group form -->
+    <div class="form-group">
+      <label for="groupName">Group Name</label>
+      <input type="text" class="form-control" required [(ngModel)]="newGroupName" name="newGroupName" id="groupName">
+    </div>
+    <div class="form-group my-2">
+      <label for="description">Group description</label>
+      <input type="text" class="form-control" [(ngModel)]="newDescription" name="newDescription" id="description">
+    </div>
+    <button class="btn btn-primary" (click)="addNewGroup()">Add Group</button>
+  </form>
+  <!-- Loop through all groups and display in list -->
+  <ul class="list-group" *ngFor="let group of groups">
+    <li class="list-group-item">
+      <h2>{{group.groupName}}</h2>
+      <p>{{group.description}}</p>
+      <p>Users in group: {{group.users.length}}</p>
+      <p>Channels in group: {{group.channels.length}}</p>
+      <button class="btn btn-primary">Enter Group</button>
+    </li>
+  </ul>
+  <!-- <label for="groupName" style="font-weight: bolder">New Group</label>
   <div class="row">
     <div class="col">
       <input
@@ -20,7 +42,7 @@
   <label *ngIf="newGroupError">Error: Group already exists</label>
 </form>
 <div class="row">
-  <ul class="list-group mt-3" *ngFor="let group of storageService.groups">
+  <ul class="list-group mt-3" *ngFor="">
     <li class="list-group-item">
       <div class="row">
         <div class="m-x-3 col-sm-auto">
@@ -77,5 +99,5 @@
         </li>
       </ul>
     </li>
-  </ul>
+  </ul> -->
 </div>
