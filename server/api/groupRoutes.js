@@ -112,7 +112,8 @@ router.delete("/groups/:id", async (req,res) => {
  * @param {import('mongodb').Collection} coll
  */
 
-async function findGroup(coll, id) {
+export async function findGroup(coll, id) {
   let groupId = new ObjectId(id);
+  console.log("HERE" + groupId)
   return await coll.findOne({ _id: groupId });
 }

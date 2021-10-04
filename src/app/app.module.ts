@@ -10,6 +10,7 @@ import { GroupsComponent } from './groups/groups.component';
 import { ChannelComponent } from './channel/channel.component';
 import { GroupDirective } from './group.directive';
 import { HttpClientModule } from '@angular/common/http';
+import { GroupComponent } from './group/group.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { HttpClientModule } from '@angular/common/http';
     NavbarComponent,
     GroupsComponent,
     GroupDirective,
+    GroupComponent,
   ],
   imports: [
     BrowserModule,

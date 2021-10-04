@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http'
+import { HttpClient, HttpErrorResponse } from '@angular/common/http'
 
 
 ///
@@ -36,18 +36,27 @@ export class GroupDataService {
     return this.http.get<any>(groupsApiUrl)
   }
   public getGroup(id: string) {
-    return this.http.get<any>(groupsApiUrl + id)
+    return this.http.get<Group>(groupsApiUrl + id)
   }
   public deleteGroup(id: string) {
     return this.http.delete<any>(groupsApiUrl + id)
   }
   public addGroup(newGroup: Group) {
-   
-    return this.http.post<any>(groupsApiUrl, newGroup, {observe:"response"})
+    return this.http.post<any>(groupsApiUrl, newGroup)
   }
   public updateGroup(id: string, group:Group){
     return this.http.put<any>(groupsApiUrl, group)
   }
+
+  // private errorHandler(error: HttpErrorResponse){
+  //   if(error.status === 0) {
+  //     console.error("And error occured:", error.error)
+  //   } else if(error.status == 409) {
+  //     return throwError("Group with that name exists")
+  //     console.error("Conflict group with that name exsits")
+  //   }
+  // }
+  
   // storeData() {
   //   localStorage.setItem('groups', JSON.stringify(this.groups));
   //   localStorage.setItem('users', JSON.stringify(this.users));

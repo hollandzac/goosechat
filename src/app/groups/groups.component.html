@@ -1,103 +1,63 @@
-<div class="justify-content-center">
-  <form class="py-2">
-    <!-- Add group form -->
-    <div class="form-group">
-      <label for="groupName">Group Name</label>
-      <input type="text" class="form-control" required [(ngModel)]="newGroupName" name="newGroupName" id="groupName">
-    </div>
-    <div class="form-group my-2">
-      <label for="description">Group description</label>
-      <input type="text" class="form-control" [(ngModel)]="newDescription" name="newDescription" id="description">
-    </div>
-    <button class="btn btn-primary" (click)="addNewGroup()">Add Group</button>
-  </form>
-  <!-- Loop through all groups and display in list -->
-  <ul class="list-group" *ngFor="let group of groups">
-    <li class="list-group-item">
-      <h2>{{group.groupName}}</h2>
-      <p>{{group.description}}</p>
-      <p>Users in group: {{group.users.length}}</p>
-      <p>Channels in group: {{group.channels.length}}</p>
-      <button class="btn btn-primary">Enter Group</button>
-    </li>
-  </ul>
-  <!-- <label for="groupName" style="font-weight: bolder">New Group</label>
+<div class="container">
+  
   <div class="row">
-    <div class="col">
-      <input
-        type="text"
-        class="form-control"
-        id="GroupName"
-        [(ngModel)]="newGroupName"
-        name="newGroupName"
-        placeholder="Enter new group name"
-      />
-    </div>
-    <div class="col">
-      <button type="submit" class="btn btn-primary" (click)="addNewGroup()">
-        Submit
-      </button>
-    </div>
-  </div>
-  <label *ngIf="newGroupError">Error: Group already exists</label>
-</form>
-<div class="row">
-  <ul class="list-group mt-3" *ngFor="">
-    <li class="list-group-item">
-      <div class="row">
-        <div class="m-x-3 col-sm-auto">
-          <h3>{{ group.name }}</h3>
-        </div>
-        <div class="col-sm-1">
-          <button
-            type="button"
-            class="p-x-2 btn btn-danger"
-            (click)="removeGroup(group)"
-          >
-            Delete
-          </button>
-        </div>
-      </div>
-      <form class="form-control">
-        <label for="groupName" style="font-weight: bolder">New Channel</label>
-        <div class="row">
-          <div class="col">
+    <h2 class="justify-content-center">Welcome _USER_ to Goosechat</h2>
+    <div class="col-auto">
+      <div class="card cards-styling">
+        <form class="card-body">
+          <!-- Add group form -->
+          <div class="form-group">
+            <h5 class="card-title justify-content-centre">Create New Group</h5>
+            <label for="groupName">Group Name</label>
             <input
               type="text"
               class="form-control"
-              [(ngModel)]="newChannelName"
-              name="newChannelName"
-              placeholder="Enter new channel name"
+              required
+              [(ngModel)]="newGroupName"
+              name="newGroupName"
+              id="groupName"
             />
           </div>
-          <div class="col">
-            <button
-              type="submit"
-              class="btn btn-primary"
-              (click)="addNewChannel(group)"
-            >
-              Submit
-            </button>
+          <div class="form-group my-2">
+            <label for="description">Group description</label>
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="newDescription"
+              name="newDescription"
+              id="description"
+            />
           </div>
-        </div>
-        <label *ngIf="newChannelErr"
-          >Error: Channel already exists in this group</label
-        >
-      </form>
-      <ul class="list-group m-2" *ngFor="let channel of group.channels">
-        <li class="list-group-item">
-          <a [routerLink]="['/channel', group.name, channel.name]" class="mt-pt-5">{{
-            channel.name
-          }}</a>
-          <button
-            type="button"
-            class="mx-3 btn btn-danger"
-            (click)="removeChannel(group, channel)"
-          >
-            Delete
+          <button class="btn btn-primary" (click)="addNewGroup()">
+            Add Group
           </button>
-        </li>
-      </ul>
-    </li>
-  </ul> -->
+          <p>{{ groupError }}</p>
+        </form>
+      </div>
+    </div>
+    <!-- Loop through all groups and display in cards -->
+
+    <div class="col-auto" *ngFor="let group of groups; index as idx">
+      <div class="card cards-styling">
+        <div class="card-body">
+          <h5 class="card-title">{{ group.groupName }}</h5>
+         
+          <p class="card-text">{{ group.description }}</p>
+          <p>Users in group: {{ group.users.length }}</p>
+          <p>Channels in group: {{ group.channels.length }}</p>
+          <span class="mt-2">
+            <button class="btn btn-primary mx-1" [routerLink]="['/group', group._id]">
+              Enter
+            </button>
+            <button class="btn btn-success mx-1" (click)="deleteGroup(group._id, idx)">
+              Edit
+            </button>
+            <button class="btn btn-danger mx-1" (click)="deleteGroup(group._id, idx)">
+              Delete
+            </button>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

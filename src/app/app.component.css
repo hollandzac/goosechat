@@ -1,0 +1,15 @@
+.body-content{
+    margin-top: 70px;
+}
+
+.cards-styling{
+    width:20rem;
+    border-color: black;
+    border-radius: 15px;
+    box-shadow: 5px 8px 4px grey;
+    margin: 0.5rem;
+}
+.edit-button{
+    width: 5px;
+    max-height: 5px;
+}

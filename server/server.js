@@ -4,7 +4,8 @@ import { createServer } from "http";
 import { Server } from "socket.io";
 import { connectToServer, seed } from "./mongodb.js";
 import { router as groupsRouter } from "./api/groupRoutes.js";
-import { router as userRouter } from "./api/userRoutes.js";
+import { router as usersRouter } from "./api/userRoutes.js";
+import { router as channelsRouter } from "./api/channelRoutes.js"
 import { socketConnect } from "./socket.js";
 
 //Define server and databse
@@ -41,10 +42,11 @@ connectToServer(function(err) {
   if (err) {
     console.error(err);
   }
-  seed()
+  //seed()
 
   app.use("/api", groupsRouter);
-  app.use("/api", userRouter);
+  app.use("/api", usersRouter);
+  app.use("/api", channelsRouter);
   socketConnect(io, PORT)
  
   httpServer.listen(PORT, () => {
