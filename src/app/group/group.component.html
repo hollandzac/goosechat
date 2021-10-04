@@ -1,0 +1,47 @@
+<div class="container">
+  <div class="mt-5" *ngIf="group">
+    <h1>{{ group.groupName }}</h1>
+    <h3>{{ group.description }}</h3>
+
+    <form class="py-2">
+      <!-- Add group form -->
+      <div class="form-group">
+        <label for="groupName">Channel name</label>
+        <input
+          type="text"
+          class="form-control"
+          required
+          [(ngModel)]="newChannelName"
+          name="newchannelName"
+          id="channelName"
+        />
+      </div>
+      <div class="form-channel my-2">
+        <label for="description">Channel description</label>
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="newDescription"
+          name="newDescription"
+          id="description"
+        />
+      </div>
+      <p>{{channelError}}</p>
+      <button class="btn btn-primary" (click)="addNewChannel()">
+        Add channel
+      </button>
+      <p>{{ channelError }}</p>
+    </form>
+    <!-- Loop through all channels and display in list -->
+    <ul class="list-channel" *ngFor="let channel of group.channels">
+      <li class="list-channel-item">
+        <h2>{{ channel.name }}</h2>
+        <p>{{ channel.description }}</p>
+        <p>Users in channel: {{ channel.users.length }}</p>
+        <button class="btn btn-primary">Enter channel</button>
+        <button class="btn btn-danger" (click)="deleteChannel(channel._id)">Enter channel</button>
+
+      </li>
+    </ul>
+  </div>
+</div>
