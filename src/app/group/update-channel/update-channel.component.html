@@ -1,0 +1,29 @@
+<form>
+  <div class="form-group">
+    <h5 class="card-title justify-content-centre">Edit Channel</h5>
+    <label for="Name">Channel Name</label>
+    <input
+      type="text"
+      class="form-control"
+      required
+      [(ngModel)]="updateChannelName"
+      name="newChannelName"
+      id="channelName"
+    />
+  </div>
+  <div class="form-group my-2">
+    <label for="description">Channel description</label>
+    <input
+      type="text"
+      class="form-control"
+      [(ngModel)]="updateChannelDescription"
+      name="newDescription"
+      id="description"
+    />
+  </div>
+  <button class="btn btn-primary" (click)="updateChannel()">Update</button>
+  <button class="btn btn-secondary mx-2" (click)="getGroup.emit(group_Id)">
+    Back
+  </button>
+  <p>{{ channelError }}</p>
+</form>

@@ -55,7 +55,7 @@ router.post("/groups/:groupId/channels", async (req, res) => {
     const exists = group.channels.find((ele) => {
       return ele.name === newChannel.name;
     });
-    
+
     console.log(exists);
     if (exists) {
       res.status(409).send("Channel with that name exists");
@@ -72,7 +72,31 @@ router.post("/groups/:groupId/channels", async (req, res) => {
     res.status(401).send(err);
   }
 });
-
+//Update a channel
+router.put("/groups/:groupId/channels/:channelId", async (req,res) => {
+    try{
+       if (!req.body) {
+        throw "No body";
+       }
+       let channel = req.body
+       const coll = getDb().collection("groups");
+       let group = await findGroup(coll, req.params.groupId);
+       
+       if(!group){
+           throw "Group not found"
+       }
+       let groupId = new ObjectId(req.params.groupId)
+       let channelId = new ObjectId(req.params.channelId)
+       let updatedChannel = await coll.updateOne(
+           {_id: groupId, "channels._id": channelId},
+           { $set: {"channels.$.name": channel.name, "channels.$.description": channel.description}}
+       )
+        res.status(200).send(updatedChannel)
+    }catch(err){
+        res.status(400).send(err)
+        console.log("ERROR: " + err)
+    }
+})
 // //Update a group
 // router.put("/groups/:id", async (req, res) => {
 //   try {

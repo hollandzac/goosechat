@@ -1,0 +1,28 @@
+<!-- Add group form -->
+<form>
+    <div class="form-group">
+      <h5 class="card-title justify-content-centre">Create New Channel</h5>
+      <label for="channelName">Channel Name</label>
+      <input
+        type="text"
+        class="form-control"
+        required
+        [(ngModel)]="newChannelName"
+        name="newChannelName"
+        id="channelName"
+      />
+    </div>
+    <div class="form-channel my-2">
+      <label for="description">Channel description</label>
+      <input
+        type="text"
+        class="form-control"
+        [(ngModel)]="newDescription"
+        name="newDescription"
+        id="description"
+      />
+    </div>
+    <button class="btn btn-primary" (click)="addNewChannel()">Add Channel</button>
+    <p>{{ channelError }}</p>
+  </form>
+  

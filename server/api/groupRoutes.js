@@ -76,6 +76,7 @@ router.put("/groups/:id", async (req, res) => {
         {
           $set: {
             groupName: updateGroup.groupName,
+            description: updateGroup.description,
             channels: updateGroup.channels,
             users: updateGroup.users,
             assistants: updateGroup.assistants,
@@ -114,6 +115,5 @@ router.delete("/groups/:id", async (req,res) => {
 
 export async function findGroup(coll, id) {
   let groupId = new ObjectId(id);
-  console.log("HERE" + groupId)
   return await coll.findOne({ _id: groupId });
 }

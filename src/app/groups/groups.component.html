@@ -1,38 +1,13 @@
 <div class="container">
   
   <div class="row">
-    <h2 class="justify-content-center">Welcome _USER_ to Goosechat</h2>
+    <h2 class="display-2">Welcome _USER_ to Goosechat</h2>
     <div class="col-auto">
       <div class="card cards-styling">
-        <form class="card-body">
-          <!-- Add group form -->
-          <div class="form-group">
-            <h5 class="card-title justify-content-centre">Create New Group</h5>
-            <label for="groupName">Group Name</label>
-            <input
-              type="text"
-              class="form-control"
-              required
-              [(ngModel)]="newGroupName"
-              name="newGroupName"
-              id="groupName"
-            />
-          </div>
-          <div class="form-group my-2">
-            <label for="description">Group description</label>
-            <input
-              type="text"
-              class="form-control"
-              [(ngModel)]="newDescription"
-              name="newDescription"
-              id="description"
-            />
-          </div>
-          <button class="btn btn-primary" (click)="addNewGroup()">
-            Add Group
-          </button>
-          <p>{{ groupError }}</p>
-        </form>
+        <div class="card-body">
+          <app-add-group *ngIf="!groupToEdit"(getAllGroups)="getAllGroups()"></app-add-group>
+          <app-update-group *ngIf="groupToEdit" [group]="groupToEdit" (getAllGroups)="getAllGroups()"></app-update-group>
+        </div>
       </div>
     </div>
     <!-- Loop through all groups and display in cards -->
@@ -43,16 +18,16 @@
           <h5 class="card-title">{{ group.groupName }}</h5>
          
           <p class="card-text">{{ group.description }}</p>
-          <p>Users in group: {{ group.users.length }}</p>
+          <p class="card-text" >Users in group: {{ group.users.length }}</p>
           <p>Channels in group: {{ group.channels.length }}</p>
           <span class="mt-2">
             <button class="btn btn-primary mx-1" [routerLink]="['/group', group._id]">
               Enter
             </button>
-            <button class="btn btn-success mx-1" (click)="deleteGroup(group._id, idx)">
+            <button class="btn btn-success mx-1" (click)="editGroup(idx)">
               Edit
             </button>
-            <button class="btn btn-danger mx-1" (click)="deleteGroup(group._id, idx)">
+            <button class="btn btn-danger mx-1" (click)="deleteGroup(group._id)">
               Delete
             </button>
           </span>

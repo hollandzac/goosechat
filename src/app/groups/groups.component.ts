@@ -10,58 +10,29 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class GroupsComponent implements OnInit {
   public groups: Array<Group> = [];
-  public newGroupName: string = '';
-  public newDescription: string = '';
-  public groupError: string | null = null;
+  public groupToEdit: Group | null
+ 
   constructor(public groupsDataService: GroupDataService) {}
 
   ngOnInit(): void {
     this.getAllGroups();
   }
-  private getAllGroups(): void {
+  getAllGroups(): void {
     this.groupsDataService.getAllGroups().subscribe((groups) => {
       console.log(groups);
       this.groups = groups;
+      this.groupToEdit = null
     });
   }
-  //Creates a group from form import then sends a post request to server
-  addNewGroup() {
-    let newGroup: Group = {
-      groupName: this.newGroupName,
-      description: this.newDescription,
-      users: [],
-      channels: [],
-      assistants: [],
-    };
-    //Post new group if res status 4xx display error
-    this.groupsDataService.addGroup(newGroup).subscribe(
-      (res) => {
-        this.groupError = null;
-        this.getAllGroups();
-      },
-      (error) => {
-        console.log(error.status);
-        if (error.status === 409) {
-          this.groupError = 'Conflict group with that name exists';
-        }
-      }
-    );
-  }
-  deleteGroup(group_Id: string | undefined, idx: number) {
+
+  deleteGroup(group_Id: string | undefined) {
     if (group_Id) {
       this.groupsDataService.deleteGroup(group_Id).subscribe((res) => {
         this.getAllGroups()
       });
     }
   }
-  // removeGroup(group: Group){
-  //   this.storageService.removeGroup(group)
-  // }
-  // addNewChannel(group: Group){
-  //   this.newChannelErr = this.storageService.newChannel(this.newChannelName, group)
-  //   this.newChannelName = ""
-  // }
-  // removeChannel(group: Group, channel: Channel){
-  //   this.storageService.removeChannel(channel, group)
-  // }
+  editGroup(idx: number){
+    this.groupToEdit = this.groups[idx]
+  }
 }

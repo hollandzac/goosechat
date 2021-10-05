@@ -7,7 +7,7 @@ const groupsApiUrl: string = 'http://localhost:3000/api/groups/'
 export interface Channel {
   _id?: string,
   name: string;
-  description: string,
+  description: string | null,
   users: Array<string>;
 }
 export interface Group{
@@ -45,7 +45,7 @@ export class GroupDataService {
     return this.http.post<any>(groupsApiUrl, newGroup)
   }
   public updateGroup(id: string, group:Group){
-    return this.http.put<any>(groupsApiUrl, group)
+    return this.http.put<any>(groupsApiUrl + id, group)
   }
 
   // private errorHandler(error: HttpErrorResponse){
