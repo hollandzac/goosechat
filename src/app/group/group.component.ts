@@ -1,5 +1,9 @@
-import { Component,OnInit } from '@angular/core';
-import { GroupDataService, Channel, Group } from '../services/group-data.service';
+import { Component, OnInit } from '@angular/core';
+import {
+  GroupDataService,
+  Channel,
+  Group,
+} from '../services/group-data.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { ChannelDataService } from '../services/channel-data.service';
 import { AuthenticationService } from '../services/authentication.service';
@@ -7,42 +11,55 @@ import { AuthenticationService } from '../services/authentication.service';
 @Component({
   selector: 'app-group',
   templateUrl: './group.component.html',
-  styleUrls: ['./group.component.css', '../app.component.css']
+  styleUrls: ['./group.component.css', '../app.component.css'],
 })
 export class GroupComponent implements OnInit {
-  public group: Group
-  public group_Id: string
-  public channelToEdit: Channel | null
-  public newChannelName: string = ""
-  public newDescription: string = ""
-  public channelError: string | null = null
+  public group: Group;
+  public group_Id: string;
+  public channelToEdit: Channel | null;
+  public newChannelName: string = '';
+  public newDescription: string = '';
+  public channelError: string | null = null;
+  public channelIdx:number = 0
 
-  constructor(public groupsDataService: GroupDataService, private route: ActivatedRoute, private channelDataService: ChannelDataService, public authService: AuthenticationService) {
-  }
+  constructor(
+    public groupsDataService: GroupDataService,
+    private route: ActivatedRoute,
+    private channelDataService: ChannelDataService,
+    public authService: AuthenticationService
+  ) {}
 
   ngOnInit(): void {
-    const group_Id: string | null = this.route.snapshot.paramMap.get('group_Id')
+    const group_Id: string | null =
+      this.route.snapshot.paramMap.get('group_Id');
 
-    if(group_Id){
-      this.group_Id = group_Id
-      this.getGroup(group_Id)
+    if (group_Id) {
+      this.group_Id = group_Id;
+      this.getGroup(group_Id);
     }
   }
 
-  getGroup(group_Id: string): void{
-    this.groupsDataService.getGroup(group_Id).subscribe(group => {
-      this.group = group
-      this.channelToEdit = null
-    })
+  getGroup(group_Id: string): void {
+    this.groupsDataService.getGroup(group_Id).subscribe((group) => {
+      this.group = group;
+      this.channelToEdit = null;
+    });
   }
 
-  deleteChannel(channel_Id:string | undefined){
-    console.log(channel_Id)
-    if(channel_Id){
-      this.channelDataService.deleteChannel(this.group_Id, channel_Id ).subscribe( res =>{
-        this.getGroup(this.group_Id)
-      })
+  deleteChannel(channel_Id: string | undefined) {
+    console.log(channel_Id);
+    if (channel_Id) {
+      this.channelDataService
+        .deleteChannel(this.group_Id, channel_Id)
+        .subscribe((res) => {
+          this.getGroup(this.group_Id);
+        });
     }
-    
+  }
+  manageChannelUsers(idx: number){
+    this.channelIdx = idx
+  }
+  dropManageChannelUsers(){
+    this.channelIdx = -1
   }
 }

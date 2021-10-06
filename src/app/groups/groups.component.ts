@@ -12,6 +12,7 @@ import { AuthenticationService } from '../services/authentication.service';
 export class GroupsComponent implements OnInit {
   public groups: Array<Group> = [];
   public groupToEdit: Group | null
+  public addId:number = -1
  
   constructor(public groupsDataService: GroupDataService, public authService: AuthenticationService) {}
 
@@ -35,5 +36,8 @@ export class GroupsComponent implements OnInit {
   }
   editGroup(idx: number){
     this.groupToEdit = this.groups[idx]
+  }
+  show(id:number){
+    return true
   }
 }

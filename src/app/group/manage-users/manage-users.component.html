@@ -1,0 +1,33 @@
+<!-- Add group form -->
+<form>
+  <div class="form-group">
+    <h5 class="card-title justify-content-centre">Manage Users {{channelIdx}}</h5>
+    <label for="username">Username</label>
+    <input
+      type="text"
+      class="form-control"
+      required
+      [(ngModel)]="username"
+      name="username"
+      id="username"
+      placeholder="username"
+    />
+    <div *ngIf="channelIdx < 0" class="my-2">
+        <label class="checkbox-inline">
+            <input
+            type="checkbox"
+            [(ngModel)]="isAssistant"
+            name="isAssistant"
+            class="mx-2"
+          />
+          </label>
+        <label class="form-check-label" for="isAssistant"> Group Assistant </label>
+    </div>
+  </div>
+  <p>{{ addError }}</p>
+  <div class="my-2">
+      <button class="btn btn-primary " (click)="addUser()">Add</button>
+      <button class="btn btn-danger mx-2" (click)="removeUser()">Remove</button>
+      <button *ngIf="channelIdx >= 0" class="btn btn-secondary" (click)="dropManageChannelUsers.emit()">Back</button>
+  </div>
+</form>

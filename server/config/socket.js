@@ -27,23 +27,24 @@ export function socketConnect(io, PORT) {
       //get objectid for user and channel
       let channelId = new ObjectId(channel_Id);
       let userId = new ObjectId(user_Id);
-
+      console.log("NEXT")
       let user = await usersColl.findOne(
         { _id: userId },
-        { projection: { _id: 0, name: 1 } }
+        { projection: { _id: 0, username: 1 } }
       );
-      console.log(user.name)
-      socket.username = user.name
+      console.log(user)
+      console.log(user.username)
+      socket.username = user.username
       socket.user_Id = userId
       socket.channel_Id = channelId
       //emit connection message to current user
-      socket.emit("message", formatMessage("CHATBOT", `Welcome ${user.name}`));
+      socket.emit("message", formatMessage("CHATBOT", `Welcome ${user.username}`));
       //tell all connected socket in roomed that the new user joined
       socket.broadcast
         .to(channel_Id)
         .emit(
           "message",
-          formatMessage("CHATBOT", `${user.name} has joined the channel`)
+          formatMessage("CHATBOT", `${user.username} has joined the channel`)
         );
     });
 

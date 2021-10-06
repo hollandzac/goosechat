@@ -48,7 +48,7 @@ connectToServer(function(err) {
   if (err) {
     return console.error(err);
   }
-
+  //seed()
   app.use("/api", groupsRouter);
   app.use("/api", usersRouter);
   app.use("/api", channelsRouter);

@@ -57,6 +57,23 @@ router.post("/groups", async (req, res) => {
     res.status(404).send(err);
   }
 });
+router.put("/groups/:id/users", async (req, res) => {
+  let result = await addUser(req, false);
+  if (result.err) {
+    res.status(400).send(result.err);
+  } else {
+    res.status(201).send(result.userId);
+  }
+});
+router.put("/groups/:id/assistants", async (req, res) => {
+  let result = await addUser(req, true);
+  console.log(result);
+  if (result.err) {
+    res.status(400).send(result.err);
+  } else {
+    res.status(201).send(result.userId);
+  }
+});
 
 //Update a group
 router.put("/groups/:id", async (req, res) => {
@@ -83,7 +100,7 @@ router.put("/groups/:id", async (req, res) => {
           },
         }
       );
-      res.status(204).send()
+      res.status(204).send();
     }
   } catch (err) {
     res.status(400).send(err);
@@ -91,23 +108,22 @@ router.put("/groups/:id", async (req, res) => {
 });
 
 //Delete a group
-router.delete("/groups/:id", async (req,res) => {
+router.delete("/groups/:id", async (req, res) => {
   try {
     const coll = getDb().collection("groups");
     let group = await findGroup(coll, req.params.id);
-    
+
     if (!group) {
       throw "No group found to delete";
     } else {
       let groupId = new ObjectId(req.params.id);
-      await coll.deleteOne({_id:groupId})
-      res.status(200).send()
+      await coll.deleteOne({ _id: groupId });
+      res.status(200).send();
     }
-  } catch(err){
-    res.status(404).send(err)
+  } catch (err) {
+    res.status(404).send(err);
   }
-
-})
+});
 
 /**
  * @param {import('mongodb').Collection} coll
@@ -116,4 +132,52 @@ router.delete("/groups/:id", async (req,res) => {
 export async function findGroup(coll, id) {
   let groupId = new ObjectId(id);
   return await coll.findOne({ _id: groupId });
+}
+export async function getUserId(username) {
+  let coll = getDb().collection("users");
+  return await coll.findOne({ username: username }, { projection: { _id: 1 } });
+}
+
+async function addUser(req, isAssistant) {
+  try {
+    if (!req.body) {
+      throw "No body";
+    }
+    const coll = getDb().collection("groups");
+    let group = await findGroup(coll, req.params.id);
+    if (!group) {
+      throw "Group Error";
+    }
+
+    const updateUser = req.body;
+    let userId = await getUserId(updateUser.username);
+    if (userId) {
+      if (isAssistant) {
+        let result =  await coll.findOne({_id:group._id, assistants:userId._id})
+        if(result){
+          throw "User already a assistant"
+        }
+        await coll.updateOne(
+          { _id: group._id },
+          { $push: { assistants: userId._id } }
+        );
+      } else {
+        let result =  await coll.findOne({_id:group._id, users:userId._id})
+        if(result){
+          throw "User already in group"
+        }
+        await coll.updateOne(
+          { _id: group._id },
+          { $push: { users: userId._id } }
+        );
+      }
+      return { err: null, userId: userId };
+    } else {
+      console.log("throwing");
+      throw "Username does not exist";
+    }
+  } catch (err) {
+    console.log(err)
+    return { err: err, userId: null };
+  }
 }

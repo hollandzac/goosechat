@@ -16,9 +16,10 @@
       <div class="card cards-styling">
         <div class="card-body">
           <h5 class="card-title">{{ group.groupName }}</h5>
-         
           <p class="card-text">{{ group.description }}</p>
-          <p class="card-text" >Users in group: {{ group.users.length }}</p>
+            <p class="card-text" >Users in group: {{ group.users.length }}</p>
+       
+           
           <p>Channels in group: {{ group.channels.length }}</p>
           <span class="mt-2">
             <button class="btn btn-primary mx-1" [routerLink]="['/group', group._id]">

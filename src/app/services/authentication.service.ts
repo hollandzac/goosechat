@@ -15,7 +15,6 @@ export class AuthenticationService {
   login(username: string, password: string){
     return this.httpClient.post<User>("http://localhost:3000/api/login", {username, password})
   }
-
   setUser(user: User){
     this.user = user
     localStorage.setItem("currentUser", JSON.stringify(user))

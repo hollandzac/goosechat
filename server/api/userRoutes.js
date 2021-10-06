@@ -11,7 +11,6 @@ export const router = express.Router();
  */
 
 router.post('/login', passport.authenticate('local', { session: false }), (req,res, next) => {
-  console.log("HI")
   delete req.user.passHash
   res.send(req.user)
 })
@@ -23,9 +22,9 @@ router.post('/register', async (req,res,next) =>{
     }
     const coll = getDb().collection("users")
     console.log(req.body)
-    if(!await coll.findOne({name: req.body.username})){
+    if(!await coll.findOne({username: req.body.username})){
       const  newUser = {
-        name: req.body.username,
+        username: req.body.username,
         email: req.body.email,  
         passHash: await createPassowrd(req.body.password),
         superAdmin: false,
@@ -87,7 +86,7 @@ router.post("/users", async (req, res) => {
     const newuser = req.body;
     console.log(newuser);
 
-    if (await coll.findOne({ userName: newuser.userName })) {
+    if (await coll.findOne({ username: newuser.username })) {
       res.status(409).send("user with that name exits");
     } else {
       let result = await coll.insertOne(newuser);
@@ -118,7 +117,7 @@ router.put("/users/:id", async (req, res) => {
         { _id: userId },
         {
           $set: {
-            userName: updateuser.userName,
+            username: updateuser.username,
             superAdmin: updateuser.superAdmin,
             groupAdmin: updateuser.groupAdmin
           },

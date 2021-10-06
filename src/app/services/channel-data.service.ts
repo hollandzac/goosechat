@@ -26,4 +26,7 @@ export class ChannelDataService {
   public updateChannel(group_Id:string, channel_Id: string, channel:Channel){
     return this.http.put<any>(`${groupsApiUrl + group_Id}/channels/${channel_Id}`, channel)
   }
+  public addUserChannel(group_Id:string, channel_Id: string, username:string){
+    return this.http.put<any>(`${groupsApiUrl + group_Id}/channels/${channel_Id}/users`, {username:username})
+  }
 }

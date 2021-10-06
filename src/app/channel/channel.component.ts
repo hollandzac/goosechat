@@ -35,7 +35,7 @@ export class ChannelComponent implements OnInit {
   }
   private initSocketConnection(): void{
     this.socketService.initSocket()
-    this.socketService.joinChannel(this.channel_Id)
+    this.socketService.joinChannel(this.channel_Id, this.auth.user?._id!)
     this.socketService.onMessage().subscribe( message => {
       this.messages.push(message)
     })

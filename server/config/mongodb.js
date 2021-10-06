@@ -30,7 +30,7 @@ export async function seed() {
     var _id1 = new ObjectId();
     let superAdmin = {
       _id: _id1,
-      name: "superadmin",
+      username: "superadmin",
       email: "super@goosechat.com.au",
       passHash: await createPassowrd("super"),
       superAdmin: true,
@@ -41,7 +41,7 @@ export async function seed() {
     var _id2 = new ObjectId();
     let newUser = {
       _id: _id2,
-      name: "groupadmin",
+      username: "groupadmin",
       email: "groupadmin@goosechat.com.au",
       passHash: await createPassowrd("groupadmin"),
       superAdmin: false,
@@ -52,7 +52,7 @@ export async function seed() {
     var _id3 = new ObjectId();
     newUser = {
       _id: _id3,
-      name: "assistant",
+      username: "assistant",
       email: "assistant@goosechat.com.au",
       passHash: await createPassowrd("assistant"),
       superAdmin: false,
@@ -63,7 +63,7 @@ export async function seed() {
     var _id4 = new ObjectId();
     newUser = {
       _id: _id4,
-      name: "Joe",
+      username: "Joe",
       email: "joe@goosechat.com.au",
       passHash: await createPassowrd("joe"),
       superAdmin: false,

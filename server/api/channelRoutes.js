@@ -2,7 +2,7 @@ import { channel } from "diagnostics_channel";
 import express from "express";
 import { ObjectId } from "mongodb";
 import { getDb } from "../config/mongodb.js";
-import { findGroup } from "./groupRoutes.js";
+import { getUserId, findGroup } from "./groupRoutes.js";
 export const router = express.Router();
 
 /**
@@ -73,61 +73,81 @@ router.post("/groups/:groupId/channels", async (req, res) => {
   }
 });
 //Update a channel
-router.put("/groups/:groupId/channels/:channelId", async (req,res) => {
-    try{
-       if (!req.body) {
-        throw "No body";
-       }
-       let channel = req.body
-       const coll = getDb().collection("groups");
-       let group = await findGroup(coll, req.params.groupId);
-       
-       if(!group){
-           throw "Group not found"
-       }
-       let groupId = new ObjectId(req.params.groupId)
-       let channelId = new ObjectId(req.params.channelId)
-       let updatedChannel = await coll.updateOne(
-           {_id: groupId, "channels._id": channelId},
-           { $set: {"channels.$.name": channel.name, "channels.$.description": channel.description}}
-       )
-        res.status(200).send(updatedChannel)
-    }catch(err){
-        res.status(400).send(err)
-        console.log("ERROR: " + err)
+router.put("/groups/:groupId/channels/:channelId", async (req, res) => {
+  try {
+    if (!req.body) {
+      throw "No body";
     }
-})
-// //Update a group
-// router.put("/groups/:id", async (req, res) => {
-//   try {
-//     if (!req.body) {
-//       throw "No body";
-//     }
-//     const coll = getDb().collection("groups");
-//     let group = await findGroup(coll, req.params.id);
-//     const updateGroup = req.body;
-//     if (!group) {
-//       throw "No group found to update";
-//     } else {
-//       let groupId = new ObjectId(req.params.id);
-//       await coll.updateOne(
-//         { _id: groupId },
-//         {
-//           $set: {
-//             groupName: updateGroup.groupName,
-//             channels: updateGroup.channels,
-//             users: updateGroup.users,
-//             assistants: updateGroup.assistants,
-//           },
-//         }
-//       );
-//       res.status(204).send();
-//     }
-//   } catch (err) {
-//     res.status(400).send(err);
-//   }
-// });
+    let channel = req.body;
+    const coll = getDb().collection("groups");
+    let group = await findGroup(coll, req.params.groupId);
 
+    if (!group) {
+      throw "Group not found";
+    }
+    let groupId = new ObjectId(req.params.groupId);
+    let channelId = new ObjectId(req.params.channelId);
+    let updatedChannel = await coll.updateOne(
+      { _id: groupId, "channels._id": channelId },
+      {
+        $set: {
+          "channels.$.name": channel.name,
+          "channels.$.description": channel.description,
+        },
+      }
+    );
+    res.status(200).send(updatedChannel);
+  } catch (err) {
+    res.status(400).send(err);
+    console.log("ERROR: " + err);
+  }
+});
+
+//Add a user to channel
+router.put("/groups/:groupId/channels/:channelId/users", async (req, res) => {
+  try {
+    if (!req.body) {
+      throw "No body";
+    }
+    let username = req.body.username;
+
+    const coll = getDb().collection("groups");
+    let group = await findGroup(coll, req.params.groupId);
+
+    if (!group) {
+      throw "Group not found";
+    }
+    console.log(username);
+    let groupId = new ObjectId(req.params.groupId);
+    let channelId = new ObjectId(req.params.channelId);
+    let userId = await getUserId(username);
+    if (userId) {
+      console.log(channelId);
+      let result = await coll.findOne({
+        _id: group._id,
+        "channels._id": channelId,
+        "channels.users": userId._id,
+      });
+      console.log(result);
+      if (result) {
+        throw "User already in group";
+      }
+      let result2 = await coll.updateOne(
+        { _id: group._id },
+        { $push: { "channels.$[el].users": userId._id } },
+        { arrayFilters: [{ "el._id": channelId }] }
+      );
+      console.log(result2); /*  */
+      res.status(200).send(userId);
+    } else {
+      console.log("throwing");
+      throw "Username does not exist";
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(err);
+  }
+});
 //Delete a Channel
 router.delete("/groups/:groupId/channels/:channelId", async (req, res) => {
   try {
@@ -140,7 +160,7 @@ router.delete("/groups/:groupId/channels/:channelId", async (req, res) => {
       let channelId = new ObjectId(req.params.channelId);
       await coll.updateOne(
         { _id: group._id },
-        { $pull: {channels: {_id:channelId}} }
+        { $pull: { channels: { _id: channelId } } }
       );
       res.status(200).send();
     }

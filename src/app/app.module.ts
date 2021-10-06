@@ -15,6 +15,9 @@ import { UpdateGroupComponent } from './groups/update-group/update-group.compone
 import { UpdateChannelComponent } from './group/update-channel/update-channel.component';
 import { AddChannelComponent } from './group/add-channel/add-channel.component';
 import { RegisterComponent } from './register/register.component';
+import { MatIconModule } from "@angular/material/icon"
+import { MatExpansionModule } from "@angular/material/expansion";
+import { ManageUsersComponent } from './group/manage-users/manage-users.component'
 
 @NgModule({
   declarations: [
@@ -28,13 +31,16 @@ import { RegisterComponent } from './register/register.component';
     UpdateChannelComponent,
     AddChannelComponent,
     ChannelComponent,
-    RegisterComponent
+    RegisterComponent,
+    ManageUsersComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    MatIconModule,
+    MatExpansionModule
   ],
   providers: [],
   bootstrap: [AppComponent]

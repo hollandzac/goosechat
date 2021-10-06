@@ -37,7 +37,7 @@ export class UpdateChannelComponent implements OnChanges {
         .subscribe((res) => {
           this.getGroup.emit(this.group_Id)
         }, (error) => {
-          this.channelError = "Error"
+          this.channelError = error.error
         })
     }
   }

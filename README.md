@@ -1,26 +1,19 @@
 # Goosechat
 
 ##TODO
--Create User
 --Create/promote user as group admin
 --User api
--Add user to channel/group
--Add/promote user as group assistant
+-Admin page for super
 -Set guards to permission levels
--edit groups/channels
+-remove users from groups channels
 
-
--Authentication
 -guard to groups/channels in
+
+link to register page
 
 -User profile
 -add image
 
--Setup sockets chat
--Backend sockets chat
-
 -Style frontend
-
-
 
 -Document, Apis

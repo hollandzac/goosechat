@@ -8,7 +8,7 @@ export var passConfig = (passport) => {
       try {
           console.log(username)
         const users = getDb().collection("users");
-        let user = await users.findOne({ name: username });
+        let user = await users.findOne({ username: username });
         console.log(!user)
         if (!user) {
           return done(null, false, { message: "Incorrect username." });

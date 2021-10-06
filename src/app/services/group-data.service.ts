@@ -48,6 +48,12 @@ export class GroupDataService {
   public updateGroup(id: string, group:Group){
     return this.http.put<any>(groupsApiUrl + id, group)
   }
+  public addUser(id: string, username:string){
+    return this.http.put<any>(groupsApiUrl + id + "/users", {username: username})
+  }
+  public addAssistants(id: string, username:string){
+    return this.http.put<any>(groupsApiUrl + id + "/assistants", {username: username})
+  }
 
   // private errorHandler(error: HttpErrorResponse){
   //   if(error.status === 0) {
