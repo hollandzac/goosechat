@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output, Input } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, Input, OnChanges } from '@angular/core';
 import { Group, GroupDataService } from 'src/app/services/group-data.service';
 
 @Component({
@@ -6,7 +6,7 @@ import { Group, GroupDataService } from 'src/app/services/group-data.service';
   templateUrl: './update-group.component.html',
   styleUrls: ['./update-group.component.css'],
 })
-export class UpdateGroupComponent implements OnInit {
+export class UpdateGroupComponent implements OnChanges {
   @Input() group: Group;
   public groupError: string | null = null;
   public updateGroupName:string
@@ -16,7 +16,7 @@ export class UpdateGroupComponent implements OnInit {
 
   constructor(private groupsDataService: GroupDataService) {}
 
-  ngOnInit(): void {
+  ngOnChanges(): void {
     this.updateGroupName = this.group.groupName
     this.updateGroupDescription = this.group.description
   }
@@ -30,7 +30,7 @@ export class UpdateGroupComponent implements OnInit {
     }
     if (this.group._id) {
       this.groupsDataService
-        .updateGroup(this.group._id, this.group)
+        .updateGroup(this.group._id, updatedGroup)
         .subscribe((res) => {
           this.getAllGroups.emit()
         }, (error) => {

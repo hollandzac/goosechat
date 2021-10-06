@@ -1,0 +1,25 @@
+<div class="text-center">
+    <main class="form-signin">
+        <form>
+          <img class="my-3 logo" src="../../assets/goose.png" alt="" width="72" height="57">
+          <h1 class="h3 mb-3 fw-normal">Create Account</h1>
+    
+          <div class="form-floating my-1">
+              <input type="text" [(ngModel)]="username" name="username" class="form-control" id="floatingUsername" placeholder="Username" required>
+              <label for="floatingEmail">Username</label>
+            </div>
+
+            <div class="form-floating my-2">
+              <input type="email" class="form-control" [(ngModel)]="email" name="email" id="floatingInput" placeholder="name@example.com">
+              <label for="floatingInput">Email address</label>
+            </div>
+
+          <div class="form-floating my-1">
+            <input type="password" class="form-control" [(ngModel)]="password" name="password"id="floatingPassword" placeholder="Password">
+            <label for="floatingPassword">Password</label>
+          </div>
+          <h3 class="my-2">{{registerError}}</h3>
+          <button class="w-100 btn btn-lg btn-success" type="submit" (click)="registerUser()">Create</button>
+        </form>
+      </main>
+</div>

@@ -14,6 +14,7 @@ import { AddGroupComponent } from './groups/add-group/add-group.component';
 import { UpdateGroupComponent } from './groups/update-group/update-group.component';
 import { UpdateChannelComponent } from './group/update-channel/update-channel.component';
 import { AddChannelComponent } from './group/add-channel/add-channel.component';
+import { RegisterComponent } from './register/register.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,8 @@ import { AddChannelComponent } from './group/add-channel/add-channel.component';
     UpdateGroupComponent,
     UpdateChannelComponent,
     AddChannelComponent,
+    ChannelComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,

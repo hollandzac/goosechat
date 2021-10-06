@@ -1,7 +1,7 @@
 //CRUD for groups
 import express from "express";
 import { ObjectId } from "mongodb";
-import { getDb } from "../mongodb.js";
+import { getDb } from "../config/mongodb.js";
 export const router = express.Router();
 
 /**

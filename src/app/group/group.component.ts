@@ -2,6 +2,7 @@ import { Component,OnInit } from '@angular/core';
 import { GroupDataService, Channel, Group } from '../services/group-data.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { ChannelDataService } from '../services/channel-data.service';
+import { AuthenticationService } from '../services/authentication.service';
 
 @Component({
   selector: 'app-group',
@@ -16,7 +17,7 @@ export class GroupComponent implements OnInit {
   public newDescription: string = ""
   public channelError: string | null = null
 
-  constructor(public groupsDataService: GroupDataService, private route: ActivatedRoute, private channelDataService: ChannelDataService) {
+  constructor(public groupsDataService: GroupDataService, private route: ActivatedRoute, private channelDataService: ChannelDataService, public authService: AuthenticationService) {
   }
 
   ngOnInit(): void {
@@ -31,6 +32,7 @@ export class GroupComponent implements OnInit {
   getGroup(group_Id: string): void{
     this.groupsDataService.getGroup(group_Id).subscribe(group => {
       this.group = group
+      this.channelToEdit = null
     })
   }
 

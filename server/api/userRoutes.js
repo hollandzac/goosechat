@@ -1,14 +1,57 @@
 //CRUD for users
 import express from "express";
 import { ObjectId } from "mongodb";
-import { getDb } from "../mongodb.js";
+import { getDb } from "../config/mongodb.js";
+import { createPassowrd } from "../utils/passwordUtils.js";
+import passport  from "passport";
 export const router = express.Router();
 
 /**
  * @type{import('mongodb').Collection} coll
  */
 
-///Get users
+router.post('/login', passport.authenticate('local', { session: false }), (req,res, next) => {
+  console.log("HI")
+  delete req.user.passHash
+  res.send(req.user)
+})
+
+router.post('/register', async (req,res,next) =>{
+  try{
+    if(!req.body){
+      throw("No Body")
+    }
+    const coll = getDb().collection("users")
+    console.log(req.body)
+    if(!await coll.findOne({name: req.body.username})){
+      const  newUser = {
+        name: req.body.username,
+        email: req.body.email,  
+        passHash: await createPassowrd(req.body.password),
+        superAdmin: false,
+        groupAdmin: false,
+      };
+      console.log("HEre")
+      let result = await coll.insertOne(newUser)
+      if(result.acknowledged){
+        newUser["_id"] = result.insertedId
+        delete newUser.passHash
+        res.status(200).send(newUser)
+      }else{
+        throws("Databse Error")
+      }
+      
+
+    }else {
+      res.status(409).send("Username taken")
+    }
+  }catch(err){
+    res.status(400).send(err)
+  }
+
+})
+
+///Get user data -passwords
 router.get("/users", async (req, res) => {
   const coll = getDb().collection("users");
   try {

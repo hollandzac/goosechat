@@ -2,11 +2,15 @@ import express from "express";
 import cors from "cors";
 import { createServer } from "http";
 import { Server } from "socket.io";
-import { connectToServer, seed } from "./mongodb.js";
+import { connectToServer, seed } from "./config/mongodb.js";
 import { router as groupsRouter } from "./api/groupRoutes.js";
 import { router as usersRouter } from "./api/userRoutes.js";
 import { router as channelsRouter } from "./api/channelRoutes.js"
-import { socketConnect } from "./socket.js";
+import { socketConnect } from "./config/socket.js";
+import passport from "passport";
+import {passConfig }from "./config/passport.js";
+import session from "express-session";
+
 
 //Define server and databse
 const PORT = 3000;
@@ -27,22 +31,23 @@ const io = new Server(httpServer, {
 
 //databse globabl
 
+
 //express use cors and a json body parser
 app.use(express.json());
 app.use(cors());
-//establish socket connection
-// io.on("connection", (socket) => {
-//     socket.on("join", async (channelId) => {
 
-//     })
-// })
+//app.use(session())
+
+passConfig(passport)
+app.use(passport.initialize())
+//app.use(passport.session())
+
 
 connectToServer(function(err) {
   console.log("HI");
   if (err) {
-    console.error(err);
+    return console.error(err);
   }
-  //seed()
 
   app.use("/api", groupsRouter);
   app.use("/api", usersRouter);
@@ -52,7 +57,4 @@ connectToServer(function(err) {
   httpServer.listen(PORT, () => {
     console.log("Listening on PORT:" + PORT);
   })
-  // app.listen(PORT, () => {
-  //   console.log("Connected on PORT:" + PORT);
-  // });
 });

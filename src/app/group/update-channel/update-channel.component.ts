@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { ChannelDataService } from 'src/app/services/channel-data.service';
 import { Channel, Group, GroupDataService } from 'src/app/services/group-data.service';
 
@@ -7,7 +7,7 @@ import { Channel, Group, GroupDataService } from 'src/app/services/group-data.se
   templateUrl: './update-channel.component.html',
   styleUrls: ['./update-channel.component.css']
 })
-export class UpdateChannelComponent implements OnInit {
+export class UpdateChannelComponent implements OnChanges {
 
   @Input() channel: Channel;
   @Input() group_Id: string;
@@ -19,10 +19,12 @@ export class UpdateChannelComponent implements OnInit {
 
   constructor(private channelDataService: ChannelDataService) {}
 
-  ngOnInit(): void {
+  ngOnChanges(): void {
     this.updateChannelName = this.channel.name
+    console.log(this.updateChannelName)
     this.updateChannelDescription = this.channel.description
   }
+ 
   updateChannel() {
     let updatedChannel:Channel = {
       name: this.updateChannelName,

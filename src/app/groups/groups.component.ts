@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { GroupDataService, Group } from '../services/group-data.service';
 import { catchError } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
+import { AuthenticationService } from '../services/authentication.service';
 
 @Component({
   selector: 'app-groups',
@@ -12,7 +13,7 @@ export class GroupsComponent implements OnInit {
   public groups: Array<Group> = [];
   public groupToEdit: Group | null
  
-  constructor(public groupsDataService: GroupDataService) {}
+  constructor(public groupsDataService: GroupDataService, public authService: AuthenticationService) {}
 
   ngOnInit(): void {
     this.getAllGroups();

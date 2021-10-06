@@ -1,23 +1,27 @@
-<!-- <div class="mt-5">
-  <h3>{{channel.name}}</h3>
-  <ul class="list-group" *ngFor="let message of channel.messages">
-    <li class="">{{ message }}</li>
-  </ul>
-  <form class="form-control">
-    <span>
-      <label for="message" class="form-control">New Message</label>
-      <input
-        type="text"
-        [(ngModel)]="newMessage"
-        name="newMessage"
-        id="message"
-        placeholder="Enter message"
-      />
-      <button
-        type="submit"
-        class="btn btn-primary mt-3"
-        (click)="addNewMessage()"
-      ></button>
-    </span>
+<div class="container">
+  <form>
+    <h1 class="h3 mb-3 font-weight-normal">Chat</h1>
+    <label for="text" class="sr-only">Text</label>
+    <input
+      type="text-field"
+      id="text"
+      class="form-control"
+      [(ngModel)]="newMessage"
+      name="newMessage"
+      placeholder="Enter:"
+      required
+      autofocus
+    />
+    <button
+      class="btn btn-lg btn-primary btn-block"
+      type="submit"
+      (click)="newMessageEntered()"
+    >
+      Send
+    </button>
+    <ul>
+      <li *ngFor="let message of messages">{{message.username}}:  {{message.message}}</li>
+    </ul>
   </form>
-</div> -->
+  
+</div>

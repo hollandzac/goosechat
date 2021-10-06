@@ -2,29 +2,32 @@
   <div class="row">
     <h1 class="display-2">{{ group.groupName }}</h1>
     <h1 class="display-5">{{ group.description }}</h1>
-    <div class="col-auto">
+    <div class="col-auto" *ngIf="authService.isAssistant(group.assistants)">
     <div class="card cards-styling">
       <div class="card-body">
           <app-add-channel *ngIf="!channelToEdit"[group_Id]="group_Id" (getGroup)="getGroup(group_Id)"></app-add-channel>
           <app-update-channel *ngIf="channelToEdit" [channel]="channelToEdit" [group_Id]="group_Id" (getGroup)="getGroup(group_Id)
-        "></app-update-channel>
+        "></app-update-channel> <router-outlet></router-outlet>
       </div>
     </div>
   </div>
   <!-- Loop through all channels and display in list -->
-  <div class="col-auto" *ngFor="let channel of group.channels; index as idx">
-    <div class="card cards-styling">
+  <div class="col-auto" *ngFor="let channel of group.channels; index as idx" >
+    <div class="card cards-styling" *ngIf="authService.isAssistant(channel.users)">
       <div class="card-body">
         <h5 class="card-title">{{ channel.name }}</h5>
         <p class="card-text">{{ channel.description }}</p>
         <p>Users in channel: {{ channel.users.length }}</p>
-        <button class="btn btn-primary">Enter</button>
-        <button class="btn btn-success mx-1" (click)="channelToEdit = group.channels[idx]">
-          Edit
-        </button>
-        <button class="btn btn-danger" (click)="deleteChannel(channel._id)">
-          Delete
-        </button>
+        
+            <button class="btn btn-primary" [routerLink]="['channel',channel._id]">Enter</button>
+            <span *ngIf="authService.isAssistant(group.assistants)">
+            <button class="btn btn-success mx-1" (click)="channelToEdit = group.channels[idx]">
+              Edit
+            </button>
+            <button class="btn btn-danger" (click)="deleteChannel(channel._id)">
+              Delete
+            </button>
+        </span>
       </div>
     </div>
   </div>

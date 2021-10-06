@@ -1,7 +1,7 @@
 import { channel } from "diagnostics_channel";
 import express from "express";
 import { ObjectId } from "mongodb";
-import { getDb } from "../mongodb.js";
+import { getDb } from "../config/mongodb.js";
 import { findGroup } from "./groupRoutes.js";
 export const router = express.Router();
 
@@ -138,12 +138,9 @@ router.delete("/groups/:groupId/channels/:channelId", async (req, res) => {
       throw "No group found";
     } else {
       let channelId = new ObjectId(req.params.channelId);
-      let idx = group.channels.findIndex((idx) => idx._id === channelId);
-      console.log("INDEX:" + idx);
-      group.channels.splice(idx, 1);
       await coll.updateOne(
         { _id: group._id },
-        { $set: group }
+        { $pull: {channels: {_id:channelId}} }
       );
       res.status(200).send();
     }

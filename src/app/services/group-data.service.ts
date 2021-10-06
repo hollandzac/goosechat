@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http'
 
-
 ///
 const groupsApiUrl: string = 'http://localhost:3000/api/groups/'
 export interface Channel {
@@ -20,10 +19,12 @@ export interface Group{
 }
 
 export interface User {
-  _id?: string
+  _id?: string;
+  password?: string;
+  email?: string;
   username: string;
-  superAdmin: boolean;
-  groupAdmin: boolean;
+  superAdmin?: boolean;
+  groupAdmin?: boolean;
 }
 @Injectable({
   providedIn: 'root',
