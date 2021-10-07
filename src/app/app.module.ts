@@ -17,7 +17,9 @@ import { AddChannelComponent } from './group/add-channel/add-channel.component';
 import { RegisterComponent } from './register/register.component';
 import { MatIconModule } from "@angular/material/icon"
 import { MatExpansionModule } from "@angular/material/expansion";
-import { ManageUsersComponent } from './group/manage-users/manage-users.component'
+import { ManageUsersComponent } from './group/manage-users/manage-users.component';
+import { ProfileComponent } from './profile/profile.component';
+import { AdminComponent } from './admin/admin.component'
 
 @NgModule({
   declarations: [
@@ -32,7 +34,9 @@ import { ManageUsersComponent } from './group/manage-users/manage-users.componen
     AddChannelComponent,
     ChannelComponent,
     RegisterComponent,
-    ManageUsersComponent
+    ManageUsersComponent,
+    ProfileComponent,
+    AdminComponent
   ],
   imports: [
     BrowserModule,

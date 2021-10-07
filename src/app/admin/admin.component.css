@@ -1,0 +1,15 @@
+.form-container {
+  width: 100%;
+  max-width: 500px;
+  padding: 15px;
+  margin: auto;
+}
+.profile-img {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 5px;
+  width: 150px;
+}
+.form-user {
+  width: 50%;
+}

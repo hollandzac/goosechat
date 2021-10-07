@@ -19,9 +19,15 @@
     >
       Send
     </button>
-    <ul>
-      <li *ngFor="let message of messages">{{message.username}}:  {{message.message}}</li>
+    <ul class="list-group">
+      <li class="list-group-item" *ngFor="let message of messages">
+        <span>
+          <img src="{{message.imagePath}}" class="chat-img mx-3" onerror="this.src='assets/images/user.jpg'"  alt="">
+          <p class="my-3">{{message.senderUsername}}:  {{message.message}}</p>
+        </span>
+      </li>
     </ul>
   </form>
+  
   
 </div>

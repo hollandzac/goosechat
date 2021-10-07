@@ -30,18 +30,18 @@ export function socketConnect(io, PORT) {
       console.log("NEXT")
       let user = await usersColl.findOne(
         { _id: userId },
-        { projection: { _id: 0, username: 1 } }
+        { projection: { _id: 0, username: 1,  imagePath:1} }
       );
       console.log(user)
       console.log(user.username)
+      socket.imagePath = user.imagePath
       socket.username = user.username
       socket.user_Id = userId
-      socket.channel_Id = channelId
       //emit connection message to current user
       socket.emit("message", formatMessage("CHATBOT", `Welcome ${user.username}`));
       //tell all connected socket in roomed that the new user joined
       socket.broadcast
-        .to(channel_Id)
+        .to(channel)
         .emit(
           "message",
           formatMessage("CHATBOT", `${user.username} has joined the channel`)
@@ -54,17 +54,20 @@ export function socketConnect(io, PORT) {
     //When message recieved emit to all sockets
     socket.on("message", (message) => {
       io.to(socket.channel).emit("message", formatMessage(socket.username, message));
-      messageColl.insertOne({channelId:socket.channel_Id, sender: socket.user_Id, message: message})
+      messageColl.insertOne({channelId:socket.channel_Id, senderId: socket.user_Id, message: message, senderUsername:socket.username, imagePath: socket.imagePath})
     });
+    socket.on("leaveChannel", (channel_Id) =>{
+      socket.leave(channel_Id)
+    })
 
     // socket.on("disconnect", () => {
 
     // })
   });
 }
-function formatMessage(username, message) {
+function formatMessage(senderUsername, message) {
   return {
-    username,
+    senderUsername,
     message,
   };
 }

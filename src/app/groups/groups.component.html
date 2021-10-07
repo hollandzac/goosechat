@@ -13,7 +13,7 @@
     <!-- Loop through all groups and display in cards -->
 
     <div class="col-auto" *ngFor="let group of groups; index as idx">
-      <div class="card cards-styling">
+      <div *ngIf="authService.isUser(group.users)"class="card cards-styling">
         <div class="card-body">
           <h5 class="card-title">{{ group.groupName }}</h5>
           <p class="card-text">{{ group.description }}</p>

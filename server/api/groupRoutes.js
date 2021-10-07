@@ -75,6 +75,43 @@ router.put("/groups/:id/assistants", async (req, res) => {
   }
 });
 
+//Remove user from group
+router.delete("/groups/:id/users/:username", async (req, res) => {
+  try {
+    if (!req.body) {
+      throw "No body";
+    }
+    const coll = getDb().collection("groups");
+    let group = await findGroup(coll, req.params.id);
+    let userId = await getUserId(req.params.username);
+
+    if (!group) {
+      throw "Group Error";
+    }
+    if (!userId) {
+      throw "Username does not exist";
+    }
+    console.log(group._id)
+    console.log(userId._id)
+
+    let findUser = await coll.findOne({_id: group._id, $or: [{users: userId._id},{assistants: userId._id}]});
+
+    if(!findUser){
+      throw "User no in group"
+    }
+
+    let result = await coll.updateOne(
+      { _id: group._id },
+      { $pull: { users: userId._id, assistants: userId._id  } }
+    );
+    console.log(result)
+    res.send("Success")
+  } catch (err) {
+    console.log(err)
+    res.status(400).send(err);
+  }
+});
+
 //Update a group
 router.put("/groups/:id", async (req, res) => {
   try {
@@ -153,18 +190,21 @@ async function addUser(req, isAssistant) {
     let userId = await getUserId(updateUser.username);
     if (userId) {
       if (isAssistant) {
-        let result =  await coll.findOne({_id:group._id, assistants:userId._id})
-        if(result){
-          throw "User already a assistant"
+        let result = await coll.findOne({
+          _id: group._id,
+          assistants: userId._id,
+        });
+        if (result) {
+          throw "User already a assistant";
         }
         await coll.updateOne(
           { _id: group._id },
           { $push: { assistants: userId._id } }
         );
       } else {
-        let result =  await coll.findOne({_id:group._id, users:userId._id})
-        if(result){
-          throw "User already in group"
+        let result = await coll.findOne({ _id: group._id, users: userId._id });
+        if (result) {
+          throw "User already in group";
         }
         await coll.updateOne(
           { _id: group._id },
@@ -177,7 +217,7 @@ async function addUser(req, isAssistant) {
       throw "Username does not exist";
     }
   } catch (err) {
-    console.log(err)
+    console.log(err);
     return { err: err, userId: null };
   }
 }

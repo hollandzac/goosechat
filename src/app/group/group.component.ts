@@ -20,7 +20,7 @@ export class GroupComponent implements OnInit {
   public newChannelName: string = '';
   public newDescription: string = '';
   public channelError: string | null = null;
-  public channelIdx:number = 0
+  public channelIdx:number = -1
 
   constructor(
     public groupsDataService: GroupDataService,

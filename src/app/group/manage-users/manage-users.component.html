@@ -1,7 +1,8 @@
 <!-- Add group form -->
 <form>
   <div class="form-group">
-    <h5 class="card-title justify-content-centre">Manage Users {{channelIdx}}</h5>
+    <h5 *ngIf="channelIdx >= 0" class="card-title justify-content-centre">Manage Users: {{group.channels[channelIdx].name}}</h5>
+    <h5 *ngIf="channelIdx < 0" class="card-title justify-content-centre">Manage Group Users </h5>
     <label for="username">Username</label>
     <input
       type="text"

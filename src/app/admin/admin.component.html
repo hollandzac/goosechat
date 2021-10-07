@@ -1,0 +1,21 @@
+<div class="form-container">
+    <h3 class="">Manage group admin</h3>
+    <form>
+        <input
+      type="text"
+      class="form-user justify-content-center form-control  "
+      required
+      [(ngModel)]="username"
+      name="username"
+      id="username"
+      placeholder="username"
+    />
+    <p class="my-2">{{errorString}}</p>
+    <div class="my-2">
+        <button class="btn btn-success " (click)="changeUser(true)">Promote</button>
+        <button class="btn btn-primary mx-2" (click)="changeUser(false)">Demote</button>
+    </div>
+
+    <button  class="btn btn-danger" (click)="removeAllUsers()">Remove All Users</button>
+    </form>
+</div>

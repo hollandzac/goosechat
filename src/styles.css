@@ -21,3 +21,6 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     margin-right: 1rem;
     display: inline-block;
 }
+.user-form{
+    width: 30rem;
+}

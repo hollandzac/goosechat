@@ -1,0 +1,51 @@
+<div class="text-center">
+  <main class="form-signin">
+    <form>
+    <img class="profile-img" [src]="profileImg" alt="profileImg">
+
+    <h1 class="h2 mb-3 fw-normal">{{ user.username }}</h1>
+      <h1 class="h4 mb-3 fw-normal">Update Profile</h1>
+
+      <div class="form-floating my-2">
+        <input
+          type="email"
+          class="form-control"
+          [(ngModel)]="email"
+          name="email"
+          id="floatingInput"
+          placeholder="name@example.com"
+        />
+        <label for="floatingInput">Email address</label>
+      </div>
+      <div class="form-floating my-1">
+        <input
+          type="password"
+          class="form-control"
+          [(ngModel)]="newPassword"
+          name="newPassword"
+          id="floatingNewPassword"
+          placeholder="New Password"
+        />
+        <label for="floatingNewPassword">New Password</label>
+      </div>
+      <h3 class="my-2">{{ updateError }}</h3>
+      <button
+        class="w-100 btn btn-lg btn-success"
+        type="submit"
+        (click)="updateUser()"
+      >
+        Update
+      </button>
+      <div class="text-center my-2">
+          <label for="imgup">Upload new profile photo</label>
+        <input id="imgup"class="form-control" type="file" 
+                (change)="onChange($event)">
+      
+        <button (click)="updateImg()" 
+            class="btn btn-success my-2">
+            Upload
+        </button>
+    </div>
+    </form>
+  </main>
+</div>

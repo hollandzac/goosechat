@@ -20,10 +20,10 @@
         </div>
       </div>
     </div>
-    <div class="col-auto">
+    <div class="col-auto"  *ngIf="authService.isAdmin() && authService.isAssistant(group.assistants)">
       <div class="card cards-styling">
         <div class="card-body">
-          <app-manage-users [group]="group" [channelIdx]="channelIdx" (dropManageChannelUsers)="dropManageChannelUsers()"></app-manage-users>
+          <app-manage-users  [group]="group" [channelIdx]="channelIdx" (dropManageChannelUsers)="dropManageChannelUsers()"></app-manage-users>
         </div>
       </div>
     </div>
@@ -31,14 +31,14 @@
     <div class="col-auto" *ngFor="let channel of group.channels; index as idx">
       <div
         class="card cards-styling"
-        *ngIf="authService.isAssistant(channel.users)"
+        *ngIf="authService.isAssistant(group.assistants) || authService.isUser(channel.users)"
       >
         <div class="card-body">
           <h5 class="card-title">{{ channel.name }}</h5>
           <p class="card-text">{{ channel.description }}</p>
           <span>
               <p class="userDisplay">Users in channel: {{ channel.users.length }}</p>
-              <button (click)="manageChannelUsers(idx)"class="btn" style="margin-right: 50px">
+              <button *ngIf="authService.isAdmin() && authService.isAssistant(group.assistants)" (click)="manageChannelUsers(idx)"class="btn" style="margin-right: 50px">
                   <mat-icon>add</mat-icon>
               </button>
           </span>

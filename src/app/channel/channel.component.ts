@@ -5,10 +5,14 @@ import { Observable } from 'rxjs';
 import { io } from "socket.io-client";
 import { GroupDataService } from '../services/group-data.service';
 import { SocketService } from '../services/socket-service.service';
+import { ChannelDataService } from '../services/channel-data.service';
 
 interface Message{
-  username: string,
-  message: string
+  _id?: string,
+  senderUsername: string,
+  senderId: string,
+  message: string,
+  imagePath: string,
 }
 
 @Component({
@@ -23,15 +27,24 @@ export class ChannelComponent implements OnInit {
  
   
 
-  constructor(private route: Router,private activatedRoute: ActivatedRoute, private groupsDataService: GroupDataService, private auth: AuthenticationService, private socketService: SocketService) {}
+  constructor(private route: Router,private activatedRoute: ActivatedRoute, private channelData: ChannelDataService, private auth: AuthenticationService, private socketService: SocketService) {}
 
   ngOnInit(): void {
-    const id = this.activatedRoute.snapshot.paramMap.get("channel_Id")
-    if(id){
-      this.channel_Id = id
+    const channel_Id = this.activatedRoute.snapshot.paramMap.get("channel_Id")
+    const group_Id = this.activatedRoute.snapshot.paramMap.get("channel_Id")
+    
+    if(channel_Id && group_Id){
+      this.channel_Id = channel_Id
+      this.channelData.getChatHistory(group_Id, channel_Id).subscribe(res =>{
+        console.log(res.messages)
+        this.messages = res.messages
+      })
     }
     this.initSocketConnection()
  
+  }
+  getUserImg(){
+
   }
   private initSocketConnection(): void{
     this.socketService.initSocket()

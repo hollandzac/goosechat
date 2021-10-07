@@ -23,7 +23,7 @@ export class ManageUsersComponent implements OnChanges {
   constructor(public auth:AuthenticationService, private userDataService:UserDataService, private groupDataService:GroupDataService, private channelDataService:ChannelDataService) { }
 
   ngOnChanges(): void {
-    console.log("HI")
+    this.addError = ""
   }
 
   addUser(){
@@ -39,7 +39,7 @@ export class ManageUsersComponent implements OnChanges {
         this.groupDataService.addAssistants(this.group._id!, this.username).subscribe( res =>{
           this.group.assistants.push(res._id)
           this.username = ""
-          this.addError = null
+          this.addError = "Added assitant"
         }, err => {
           console.log(err)
           this.addError = err.error
@@ -49,7 +49,7 @@ export class ManageUsersComponent implements OnChanges {
         this.groupDataService.addUser(this.group._id!, this.username).subscribe( res =>{
           this.group.users.push(res._id)
           this.username = ""
-          this.addError = null
+          this.addError = "Added user"
         }, err => {
           console.log(err)
           this.addError = err.error
@@ -57,11 +57,11 @@ export class ManageUsersComponent implements OnChanges {
       }
 
       }else{
-        
+
         this.channelDataService.addUserChannel(this.group._id!, this.group.channels[this.channelIdx]._id!, this.username).subscribe( res => {
           this.group.channels[this.channelIdx].users.push(res._id)
           this.username = ""
-          this.addError = null
+          this.addError = "Added User"
         }, err =>{
           this.addError = err.error;
         })
@@ -69,7 +69,27 @@ export class ManageUsersComponent implements OnChanges {
     }
   
 
-  removeUser(){}
+  removeUser(){
+    console.log(this.channelIdx)
+    if (this.channelIdx < 0){
+      this.groupDataService.removeUser(this.group._id!, this.username).subscribe(res => {
+        console.log("SUCCESS")
+        this.username = ""
+        this.addError = "Removed from group"
+      }, err => {
+        this.addError = err.error
+      })
+    } else{
+      this.channelDataService.removeUserChannel(this.group._id!, this.group.channels[this.channelIdx]._id!, this.username).subscribe(res =>{
+        console.log("SUCCESS")
+        this.username = ""
+        this.addError = "Removed from group"
+      }, err => {
+        this.addError = err.error;
+        
+      })
+    }
+  }
 
 
 

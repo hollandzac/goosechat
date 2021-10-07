@@ -33,6 +33,7 @@ export async function seed() {
       username: "superadmin",
       email: "super@goosechat.com.au",
       passHash: await createPassowrd("super"),
+      imagePath: null,
       superAdmin: true,
       groupAdmin: false,
     };
@@ -44,6 +45,7 @@ export async function seed() {
       username: "groupadmin",
       email: "groupadmin@goosechat.com.au",
       passHash: await createPassowrd("groupadmin"),
+      imagePath: null,
       superAdmin: false,
       groupAdmin: true,
     };
@@ -55,6 +57,7 @@ export async function seed() {
       username: "assistant",
       email: "assistant@goosechat.com.au",
       passHash: await createPassowrd("assistant"),
+      imagePath: null,
       superAdmin: false,
       groupAdmin: false,
     };
@@ -66,6 +69,7 @@ export async function seed() {
       username: "Joe",
       email: "joe@goosechat.com.au",
       passHash: await createPassowrd("joe"),
+      imagePath: "http://localhost:3000/profileImages/image.jpg",
       superAdmin: false,
       groupAdmin: false,
     };

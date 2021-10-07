@@ -29,4 +29,11 @@ export class ChannelDataService {
   public addUserChannel(group_Id:string, channel_Id: string, username:string){
     return this.http.put<any>(`${groupsApiUrl + group_Id}/channels/${channel_Id}/users`, {username:username})
   }
+  public removeUserChannel(group_Id:string, channel_Id: string, username:string){
+    return this.http.delete<any>(`${groupsApiUrl + group_Id}/channels/${channel_Id}/users/${username}`)
+  }
+
+  public getChatHistory(group_Id:string, channel_Id: string){
+    return this.http.get<any>(`${groupsApiUrl + group_Id}/channels/${channel_Id}/messages`)
+  }
 }

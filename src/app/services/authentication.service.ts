@@ -35,6 +35,9 @@ export class AuthenticationService {
     }
     return false
   }
+  isSuperAdmin(){
+    return this.user?.superAdmin || false
+  }
   isAdmin(){
     return this.user?.groupAdmin || this.user?.superAdmin
   }

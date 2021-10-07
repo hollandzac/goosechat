@@ -23,6 +23,7 @@ export interface User {
   password?: string;
   email?: string;
   username: string;
+  imagePath?: string | null,
   superAdmin?: boolean;
   groupAdmin?: boolean;
 }
@@ -53,6 +54,9 @@ export class GroupDataService {
   }
   public addAssistants(id: string, username:string){
     return this.http.put<any>(groupsApiUrl + id + "/assistants", {username: username})
+  }
+  public removeUser(id:string, username:string){
+    return this.http.delete<any>(groupsApiUrl + id + "/users/" + username)
   }
 
   // private errorHandler(error: HttpErrorResponse){
