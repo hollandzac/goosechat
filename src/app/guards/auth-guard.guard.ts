@@ -14,7 +14,6 @@ export class AuthGuardGuard implements CanActivate {
       var isAuthenticated = this.authService.isAuthenticated()
       console.log("AuthGUARD: " + isAuthenticated)
       if(!isAuthenticated){
-        window.alert("Navigating Home")
         this.router.navigateByUrl("/")
         return false
       }
