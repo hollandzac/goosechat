@@ -24,7 +24,7 @@ export class UpdateChannelComponent implements OnChanges {
     console.log(this.updateChannelName)
     this.updateChannelDescription = this.channel.description
   }
- 
+  
   updateChannel() {
     let updatedChannel:Channel = {
       name: this.updateChannelName,

@@ -9,6 +9,9 @@ const API_URL = "http://localhost:3000/api/"
 @Injectable({
   providedIn: 'root'
 })
+/**
+ * Handles all HTTP requests to server for group CRUD and users
+ */
 export class UserDataService {
   readonly defaultImage = "http://localhost:3000/profileImages/default.jpg"
   constructor(private httpClient: HttpClient) { }

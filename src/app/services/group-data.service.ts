@@ -30,6 +30,9 @@ export interface User {
 @Injectable({
   providedIn: 'root',
 })
+/**
+ * Handles all HTTP requests to server for group CRUD and users
+ */
 export class GroupDataService {
 
   constructor(private http:HttpClient) {}

@@ -7,6 +7,9 @@ const groupsApiUrl: string = 'http://localhost:3000/api/groups/'
 @Injectable({
   providedIn: 'root'
 })
+/**
+ * Handles all HTTP requests to server for channel CRUD and users
+ */
 export class ChannelDataService {
 
   constructor(private http:HttpClient) { }

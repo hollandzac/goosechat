@@ -68,9 +68,10 @@ export class ManageUsersComponent implements OnChanges {
       }
     }
   
-
+  //Remove a user from channel/group
   removeUser(){
     console.log(this.channelIdx)
+    //remove from group
     if (this.channelIdx < 0){
       this.groupDataService.removeUser(this.group._id!, this.username).subscribe(res => {
         console.log("SUCCESS")
@@ -79,6 +80,7 @@ export class ManageUsersComponent implements OnChanges {
       }, err => {
         this.addError = err.error
       })
+      //Remove from channnel
     } else{
       this.channelDataService.removeUserChannel(this.group._id!, this.group.channels[this.channelIdx]._id!, this.username).subscribe(res =>{
         console.log("SUCCESS")
