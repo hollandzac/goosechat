@@ -10,110 +10,49 @@ Install dependencies
     `cd server`
     `npm install`
 
+## Database Structure
+ ### User
+ - _id
+ - username
+ - email
+ - imagePath: Path to local static image
+ - passHash: BCrypt password
+ -	superAdmin
+ -	groupAdmin
+
+### Message
+ - ChannelId
+ - _id
+ - senderId
+ - mesge
+ - senderUsername
+ - imagePath
+
+### Group
+ - _id
+ - groupName
+ - channels: Array
+	 - _id
+	 - name
+	 - channels: Array
+		 - id's
+ - description
+ - users: Array
+	 - id's
+ - assistants: Array
+	 - id's
+
 ## Project Structure
-### Angular Frontend
-📦src
- ┣ 📂app
- ┃ ┣ 📂admin
- ┃ ┃ ┣ 📜admin.component.css
- ┃ ┃ ┣ 📜admin.component.html
- ┃ ┃ ┣ 📜admin.component.spec.ts
- ┃ ┃ ┗ 📜admin.component.ts
- ┃ ┣ 📂channel
- ┃ ┃ ┣ 📜channel.component.css
- ┃ ┃ ┣ 📜channel.component.html
- ┃ ┃ ┣ 📜channel.component.spec.ts
- ┃ ┃ ┗ 📜channel.component.ts
- ┃ ┣ 📂group
- ┃ ┃ ┣ 📂add-channel
- ┃ ┃ ┃ ┣ 📜add-channel.component.css
- ┃ ┃ ┃ ┣ 📜add-channel.component.html
- ┃ ┃ ┃ ┣ 📜add-channel.component.spec.ts
- ┃ ┃ ┃ ┗ 📜add-channel.component.ts
- ┃ ┃ ┣ 📂manage-users
- ┃ ┃ ┃ ┣ 📜manage-users.component.css
- ┃ ┃ ┃ ┣ 📜manage-users.component.html
- ┃ ┃ ┃ ┣ 📜manage-users.component.spec.ts
- ┃ ┃ ┃ ┗ 📜manage-users.component.ts
- ┃ ┃ ┣ 📂update-channel
- ┃ ┃ ┃ ┣ 📜update-channel.component.css
- ┃ ┃ ┃ ┣ 📜update-channel.component.html
- ┃ ┃ ┃ ┣ 📜update-channel.component.spec.ts
- ┃ ┃ ┃ ┗ 📜update-channel.component.ts
- ┃ ┃ ┣ 📜group.component.css
- ┃ ┃ ┣ 📜group.component.html
- ┃ ┃ ┣ 📜group.component.spec.ts
- ┃ ┃ ┗ 📜group.component.ts
- ┃ ┣ 📂groups
- ┃ ┃ ┣ 📂add-group
- ┃ ┃ ┃ ┣ 📜add-group.component.css
- ┃ ┃ ┃ ┣ 📜add-group.component.html
- ┃ ┃ ┃ ┣ 📜add-group.component.spec.ts
- ┃ ┃ ┃ ┗ 📜add-group.component.ts
- ┃ ┃ ┣ 📂update-group
- ┃ ┃ ┃ ┣ 📜update-group.component.css
- ┃ ┃ ┃ ┣ 📜update-group.component.html
- ┃ ┃ ┃ ┣ 📜update-group.component.spec.ts
- ┃ ┃ ┃ ┗ 📜update-group.component.ts
- ┃ ┃ ┣ 📜groups.component.css
- ┃ ┃ ┣ 📜groups.component.html
- ┃ ┃ ┣ 📜groups.component.spec.ts
- ┃ ┃ ┗ 📜groups.component.ts
- ┃ ┣ 📂guards
- ┃ ┃ ┣ 📜auth-guard.guard.spec.ts
- ┃ ┃ ┣ 📜auth-guard.guard.ts
- ┃ ┃ ┣ 📜super-auth.guard.spec.ts
- ┃ ┃ ┗ 📜super-auth.guard.ts
- ┃ ┣ 📂login
- ┃ ┃ ┣ 📜login.component.css
- ┃ ┃ ┣ 📜login.component.html
- ┃ ┃ ┣ 📜login.component.spec.ts
- ┃ ┃ ┗ 📜login.component.ts
- ┃ ┣ 📂navbar
- ┃ ┃ ┣ 📜navbar.component.css
- ┃ ┃ ┣ 📜navbar.component.html
- ┃ ┃ ┣ 📜navbar.component.spec.ts
- ┃ ┃ ┗ 📜navbar.component.ts
- ┃ ┣ 📂profile
- ┃ ┃ ┣ 📜profile.component.css
- ┃ ┃ ┣ 📜profile.component.html
- ┃ ┃ ┣ 📜profile.component.spec.ts
- ┃ ┃ ┗ 📜profile.component.ts
- ┃ ┣ 📂register
- ┃ ┃ ┣ 📜register.component.css
- ┃ ┃ ┣ 📜register.component.html
- ┃ ┃ ┣ 📜register.component.spec.ts
- ┃ ┃ ┗ 📜register.component.ts
- ┃ ┣ 📂services
- ┃ ┃ ┣ 📜authentication.service.spec.ts
- ┃ ┃ ┣ 📜authentication.service.ts
- ┃ ┃ ┣ 📜channel-data.service.spec.ts
- ┃ ┃ ┣ 📜channel-data.service.ts
- ┃ ┃ ┣ 📜group-data.service.spec.ts
- ┃ ┃ ┣ 📜group-data.service.ts
- ┃ ┃ ┣ 📜socket-service.service.spec.ts
- ┃ ┃ ┣ 📜socket-service.service.ts
- ┃ ┃ ┣ 📜user-data.service.spec.ts
- ┃ ┃ ┗ 📜user-data.service.ts
- ┃ ┣ 📜app-routing.module.ts
- ┃ ┣ 📜app.component.css
- ┃ ┣ 📜app.component.html
- ┃ ┣ 📜app.component.spec.ts
- ┃ ┣ 📜app.component.ts
- ┃ ┗ 📜app.module.ts
- ┣ 📂assets
- ┃ ┣ 📜.gitkeep
- ┃ ┣ 📜file-arrow-down.svg
- ┃ ┗ 📜goose.png
- ┣ 📂environments
- ┃ ┣ 📜environment.prod.ts
- ┃ ┗ 📜environment.ts
- ┣ 📜favicon.ico
- ┣ 📜index.html
- ┣ 📜main.ts
- ┣ 📜polyfills.ts
- ┣ 📜styles.css
- ┗ 📜test.ts
+ - src: contains angular frontend -> App: 
+	 - services: All data services
+	 - guards: Router guards
+	 - componets: All Components
+- server: A backend server
+	- api: All routes and handlers for API
+	- config: Configuration files for multer, mongodb, socketIO and passport
+	- utils: Password Utilities
+	- server.js: Main server file
+
     
 
 ## Testing
