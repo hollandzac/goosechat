@@ -7,7 +7,9 @@ const SERVER_URL = 'http://localhost:3000'
   providedIn: 'root'
 })
 
-
+/**
+ * Handles socket IO connections and events
+ */
 export class SocketService {
   private socket: Socket = io(SERVER_URL)
   constructor(){}

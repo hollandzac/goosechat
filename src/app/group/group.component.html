@@ -1,7 +1,9 @@
 <div class="container">
   <div class="row">
-    <h1 class="display-2">{{ group.groupName }}</h1>
-    <h1 class="display-5">{{ group.description }}</h1>
+    <h1 class="display-2">{{ groupName }}</h1>
+    <h1 class="display-5">{{ description }}</h1>
+
+    <!-- Card for creating and editing channels -->
     <div class="col-auto" *ngIf="authService.isAssistant(group.assistants)">
       <div class="card cards-styling">
         <div class="card-body">
@@ -20,7 +22,8 @@
         </div>
       </div>
     </div>
-    <div class="col-auto"  *ngIf="authService.isAdmin() && authService.isAssistant(group.assistants)">
+    <!-- Card for managing users in group and channels -->
+    <div class="col-auto"  *ngIf="authService.isAssistant(group.assistants)">
       <div class="card cards-styling">
         <div class="card-body">
           <app-manage-users  [group]="group" [channelIdx]="channelIdx" (dropManageChannelUsers)="dropManageChannelUsers()"></app-manage-users>
@@ -38,7 +41,7 @@
           <p class="card-text">{{ channel.description }}</p>
           <span>
               <p class="userDisplay">Users in channel: {{ channel.users.length }}</p>
-              <button *ngIf="authService.isAdmin() && authService.isAssistant(group.assistants)" (click)="manageChannelUsers(idx)"class="btn" style="margin-right: 50px">
+              <button *ngIf="authService.isAssistant(group.assistants)" (click)="manageChannelUsers(idx)"class="btn" style="margin-right: 50px">
                   <mat-icon>add</mat-icon>
               </button>
           </span>

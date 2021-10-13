@@ -10,33 +10,26 @@ export const router = express.Router();
  * @type{import('mongodb').Collection} coll
  */
 
-///Get all channels for a group
+/**
+ * Get all channels for a specfic groupid
+ * Returns an array of channels
+ */
 router.get("/groups/:id/channels", async (req, res) => {
   const coll = getDb().collection("groups");
   try {
-    let channels = await coll.find().toArray();
-    res.status(200).send(channels);
+    let channels = await coll.findOne({_id: new ObjectId(req.params.id)}, {projection: {_id: 0, channels: 1}})
+  
+    res.status(200).send(channels.channels);
   } catch (err) {
+    res.status(400).send()
     console.log("Error is: " + err);
   }
 });
 
-// //Get a group
-// router.get("/groups/:id", async (req, res) => {
-//   try {
-//     const coll = getDb().collection("groups");
-//     let group = await findGroup(coll, req.params.id);
-//     if (!group) {
-//       throw "No group found";
-//     }
-//     console.log(group);
-//     res.status(200).send(group);
-//   } catch (err) {
-//     res.status(404).send(err);
-//   }
-// });
-
-//Add a channel
+/**
+ * Add a channel to group with groupID
+ * Returns status 201 on success 
+ */
 router.post("/groups/:groupId/channels", async (req, res) => {
   try {
     if (!req.body) {
@@ -44,19 +37,17 @@ router.post("/groups/:groupId/channels", async (req, res) => {
     }
     const coll = getDb().collection("groups");
     const newChannel = req.body;
-    console.log(req.params.groupId);
     let group = await findGroup(coll, req.params.groupId);
-    console.log(group);
-
     if (!group) {
       throw "No group found";
     }
 
+    //Checks to see if a channel with that name already exists in the group
     const exists = group.channels.find((ele) => {
       return ele.name === newChannel.name;
     });
 
-    console.log(exists);
+
     if (exists) {
       res.status(409).send("Channel with that name exists");
     } else {
@@ -72,7 +63,11 @@ router.post("/groups/:groupId/channels", async (req, res) => {
     res.status(401).send(err);
   }
 });
-//Update a channel
+
+/**
+ * Updates a channel
+ * 
+ */
 router.put("/groups/:groupId/channels/:channelId", async (req, res) => {
   try {
     if (!req.body) {
@@ -103,7 +98,9 @@ router.put("/groups/:groupId/channels/:channelId", async (req, res) => {
   }
 });
 
-//Add a user to channel
+/**
+ * Adds a user to channel
+ */
 router.put("/groups/:groupId/channels/:channelId/users", async (req, res) => {
   try {
     if (!req.body) {
@@ -117,17 +114,14 @@ router.put("/groups/:groupId/channels/:channelId/users", async (req, res) => {
     if (!group) {
       throw "Group not found";
     }
-    console.log(username);
     let channelId = new ObjectId(req.params.channelId);
     let userId = await getUserId(username);
     if (userId) {
-      console.log(channelId);
       let result = await coll.findOne({
         _id: group._id,
         "channels._id": channelId,
         "channels.users": userId._id,
       });
-      console.log(result);
       if (result) {
         throw "User already in group";
       }
@@ -135,7 +129,6 @@ router.put("/groups/:groupId/channels/:channelId/users", async (req, res) => {
           _id: group._id, "channels._id": channelId
       }, {$push: {"channels.$.users": userId._id}})
 
-      console.log(result2); /*  */
       res.status(200).send(userId);
     } else {
       console.log("throwing");
@@ -146,7 +139,10 @@ router.put("/groups/:groupId/channels/:channelId/users", async (req, res) => {
     res.status(400).send(err);
   }
 });
-//Delete a Channel
+/**
+ * Deletes a channel from group
+ * 
+ */
 router.delete("/groups/:groupId/channels/:channelId", async (req, res) => {
   try {
     const coll = getDb().collection("groups");
@@ -167,7 +163,9 @@ router.delete("/groups/:groupId/channels/:channelId", async (req, res) => {
   }
 });
 
-//remove a user from channel
+/**
+ * deletes a user from that channel in group
+ */
 router.delete("/groups/:groupId/channels/:channelId/users/:username", async (req, res) => {
     try {
       if (!req.body) {
@@ -201,14 +199,18 @@ router.delete("/groups/:groupId/channels/:channelId/users/:username", async (req
     }
   });
 
-  //get paginated chat history
+  /**
+   * Get a paginated history of channel messages
+   */
   router.get("/groups/:groupId/channels/:channelId/messages",async (req,res) =>{
     try {
         const messages = getDb().collection( "messages");
 
         let channel_id = new ObjectId(req.params.channelId)
         let result = await messages.find({channelId: channel_id},{projection : {channelId: 0}}).toArray()
-        console.log({})
+
+        console.log("RESUTL")
+        console.log(result)
         res.status(200).send({messages: result})
     }catch(err){
             res.status(400).send(err)

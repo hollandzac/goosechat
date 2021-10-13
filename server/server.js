@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import { createServer } from "http";
 import { Server } from "socket.io";
-import { connectToServer, seed } from "./config/mongodb.js";
+import { connectToServer, getDb, seed } from "./config/mongodb.js";
 import { router as groupsRouter } from "./api/groupRoutes.js";
 import { router as usersRouter } from "./api/userRoutes.js";
 import { router as channelsRouter } from "./api/channelRoutes.js"
@@ -29,33 +29,36 @@ const io = new Server(httpServer, {
   }
 });
 
-//databse globabl
-
 
 //express use cors and a json body parser
 app.use(express.json());
 app.use(cors());
 
-//app.use(session())
+//server static images
+app.use("/profileImages",express.static("C:/Users/me/Documents/Uni 2021.2/3813ICT/goosechat/server/profileImages"))
 
 passConfig(passport)
 app.use(passport.initialize())
-//app.use(passport.session())
 
 
-connectToServer(function(err) {
-  console.log("HI");
+
+await connectToServer(async (err) => {
   if (err) {
     return console.error(err);
   }
   app.use('/profileImages', express.static('profileImages'))
- // seed()
+  //seed()
+  //add all routers to express apps
   app.use("/api", groupsRouter);
   app.use("/api", usersRouter);
   app.use("/api", channelsRouter);
+
   socketConnect(io, PORT)
- 
+
   httpServer.listen(PORT, () => {
     console.log("Listening on PORT:" + PORT);
   })
 });
+
+
+export default app;

@@ -5,21 +5,31 @@ const url = "mongodb://127.0.0.1:27017";
 const dbName = "goosechat";
 
 /**
+ * Variable containg databse connection
+ * 
  * @type {import('mongodb').Db} _db
  */
 var _db;
 
-export function connectToServer(callback) {
+
+export async function connectToServer(callback) {
   MongoClient.connect(url, (err, client) => {
     _db = client.db(dbName);
     console.log(_db.databaseName);
     return callback(err);
   });
 }
+/**
+ * 
+ * @returns Database connection
+ */
 export function getDb() {
   return _db;
 }
-
+/**
+ * Seed the databse with some intial users and groups
+ * 
+ */
 export async function seed() {
   try {
     await _db.dropDatabase();
@@ -92,24 +102,6 @@ export async function seed() {
 
     await groupsColl.insertOne(newGroup);
 
-    let messageId = new ObjectId();
-    let newMessage = {
-      _id: messageId,
-      channelId: channelId,
-      senderId: _id4,
-      message: "WOW what a message",
-    };
-    await messagesColl.insertOne(newMessage);
-
-    messageId = new ObjectId();
-    newMessage = {
-      _id: messageId,
-      channelId: channelId,
-      senderId: _id2,
-      message: "WOW I know",
-    };
-
-    await messagesColl.insertOne(newMessage);
   } catch (err) {
     console.log(err);
   }

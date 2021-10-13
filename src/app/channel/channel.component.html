@@ -1,33 +1,33 @@
-<div class="container">
+<div class="container chat-box">
   <form>
-    <h1 class="h3 mb-3 font-weight-normal">Chat</h1>
-    <label for="text" class="sr-only">Text</label>
-    <input
-      type="text-field"
-      id="text"
-      class="form-control"
-      [(ngModel)]="newMessage"
-      name="newMessage"
-      placeholder="Enter:"
-      required
-      autofocus
-    />
-    <button
-      class="btn btn-lg btn-primary btn-block"
-      type="submit"
-      (click)="newMessageEntered()"
-    >
-      Send
-    </button>
+    <h1 class="h3 mb-3 font-weight-normal" style="text-align: center;">Chat</h1>
     <ul class="list-group">
       <li class="list-group-item" *ngFor="let message of messages">
         <span>
-          <img src="{{message.imagePath}}" class="chat-img mx-3" onerror="this.src='assets/images/user.jpg'"  alt="">
+          <img class="chat-img" src="{{message.imagePath || 'http://localhost:3000/profileImages/default.jpg'}}"  alt="unknown">
           <p class="my-3">{{message.senderUsername}}:  {{message.message}}</p>
         </span>
       </li>
     </ul>
+    <div class="flex my-2">
+      <input
+        type="text-field"
+        id="text"
+        class="form-control"
+        [(ngModel)]="newMessage"
+        name="newMessage"
+        placeholder="Enter:"
+        required
+        autofocus
+      />
+      <button
+        class="btn btn-lg btn-primary btn-block mx-3"
+        type="submit"
+        (click)="newMessageEntered()"
+      >
+        Send
+      </button>
+    </div>
   </form>
-  
   
 </div>

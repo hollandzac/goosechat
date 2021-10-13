@@ -15,6 +15,7 @@ export class AdminComponent implements OnInit {
   ngOnInit(): void {
 
   }
+  //Promote or demote a user depending on input
   changeUser(flag: boolean){
     this.userService.changeAdminRole(this.username, flag).subscribe( res => {
       if(flag){
@@ -26,6 +27,7 @@ export class AdminComponent implements OnInit {
       this.errorString = "Nothing entered"
     })
   }
+  //Remove all users database
   removeAllUsers(){
     this.userService.removeAllUsers().subscribe( res => {
       this.errorString = "Removed all users"

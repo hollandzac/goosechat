@@ -12,6 +12,11 @@ export const router = express.Router();
  * @type{import('mongodb').Collection} coll
  */
 
+
+/**
+ * Login route using passport local authentication middleware
+ * Returns user without password
+ */
 router.post(
   "/login",
   passport.authenticate("local", { session: false }),
@@ -20,23 +25,27 @@ router.post(
     res.send(req.user);
   }
 );
-
+/**
+ * Register a new user route
+ * Returns the created user
+ */
 router.post("/register", async (req, res, next) => {
   try {
     if (!req.body) {
       throw "No Body";
     }
     const coll = getDb().collection("users");
-    console.log(req.body);
+    ///Look for conflict on username
     if (!(await coll.findOne({ username: req.body.username }))) {
+
       const newUser = {
         username: req.body.username,
         email: req.body.email,
         passHash: await createPassowrd(req.body.password),
         superAdmin: false,
         groupAdmin: false,
+        imagePath: 'http://localhost:3000/profileImages/default.jpeg'
       };
-      console.log("HEre");
       let result = await coll.insertOne(newUser);
       if (result.acknowledged) {
         newUser["_id"] = result.insertedId;
@@ -64,7 +73,9 @@ router.get("/users", async (req, res) => {
   }
 });
 
-//Get a user
+/**
+ * Get a user  - NOT USED
+*/
 router.get("/users/:id", async (req, res) => {
   try {
     const coll = getDb().collection("users");
@@ -80,7 +91,11 @@ router.get("/users/:id", async (req, res) => {
   }
 });
 
-//Add a user
+/**
+ * Add a user endpoint for future use
+ * 
+ * 
+ */
 router.post("/users", async (req, res) => {
   try {
     if (!req.body) {
@@ -89,7 +104,7 @@ router.post("/users", async (req, res) => {
     const coll = getDb().collection("users");
     const newuser = req.body;
     console.log(newuser);
-
+   
     if (await coll.findOne({ username: newuser.username })) {
       res.status(409).send("user with that name exits");
     } else {
@@ -104,8 +119,12 @@ router.post("/users", async (req, res) => {
   }
 });
 
-//Update a user
+/**
+ * Update a users email and password
+ * Returns 201 No Content on success
+ */
 router.put("/users/:id", async (req, res) => {
+  console.log(req.params.id)
   try {
     if (!req.body) {
       throw "No body";
@@ -114,7 +133,6 @@ router.put("/users/:id", async (req, res) => {
     const coll = getDb().collection("users");
     let user = await finduser(coll, req.params.id);
     const updateuser = req.body;
-
     if (!user) {
       throw "No user found to update";
     }
@@ -141,22 +159,29 @@ router.put("/users/:id", async (req, res) => {
   
     res.status(204).send();
   } catch (err) {
+    console.log(err)
     res.status(400).send(err);
   }
 });
 
-//Delete all users except super admin
+/**
+ * Delete all users except super admin
+ * Retruns 204 NO Content on sucess
+ */
 router.delete("/users", async (req, res) => {
   try {
     const coll = getDb().collection("users");
     coll.deleteMany({username: {$ne:"superadmin"}})
-    res.status(200).send()
+    res.status(204).send()
   } catch (err) {
     res.status(404).send(err);
   }
 });
 
-//change user admin role to group admin
+/**
+ * Promote or demote user from group admin role
+ * Returns 204 on success
+ */
 router.post("/users/groupadmin", async (req,res) => {
   try {
     const coll = getDb().collection("users");
@@ -166,13 +191,15 @@ router.post("/users/groupadmin", async (req,res) => {
     }
     console.log(req.body.groupadmin)
     await coll.updateOne({_id: user._id}, {$set : {groupAdmin: req.body.groupadmin}})
-    res.status(200).send()
+    res.status(204).send()
   }catch(err){
       res.status(400).send(err)
     }
 })
 
-//uploadProfileImg
+/**
+ * Users multer to handle upload of profile images
+ */
 router.post("/users/:userId/profileimage", async (req, res) => {
   try {
     await fileUploadManager(req, res);
@@ -181,6 +208,7 @@ router.post("/users/:userId/profileimage", async (req, res) => {
 
     let userId = new ObjectId(req.params.userId);
 
+    //addd new profile imgpath to DB
     let profileImagePath =
       "http://localhost:3000/profileImages/" + req.file.filename;
     console.log(profileImagePath);
@@ -197,27 +225,7 @@ router.post("/users/:userId/profileimage", async (req, res) => {
   }
 });
 
-// //get profile image
-// router.get("/users/:id/profileimage", async (req,res) => {
-//   try {
-//     const coll = getDb().collection("users");
-//     let user = await finduser(coll, req.params.id);
 
-//     if (!user) {
-//       throw "No user found";
-//     }
-//     console.log(user.imagePath === "")
-//     let imagePath = user.imagePath
-//     if(imagePath === ""){
-//       imagePath = "C:/Users/me/Documents/Uni 2021.2/3813ICT/goosechat/server/profileImages/default.jpg"
-//     }
-//     res.sendFile(imagePath)
-
-//   }catch(err){
-//       res.status(400).send(err)
-//     }
-
-// })
 
 async function finduser(collection, id) {
   let userId = new ObjectId(id);

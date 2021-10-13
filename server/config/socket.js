@@ -8,6 +8,9 @@ import { channel } from "diagnostics_channel";
  * @param {import('socket.io').Server} io
  * @param {number} PORT
  */
+
+const CHATBOT_IMG = "http://localhost:3000/profileImages/chatbot.png"
+
 export function socketConnect(io, PORT) {
   //Get collections for users and messages in my database
   let usersColl = getDb().collection("users");
@@ -25,7 +28,7 @@ export function socketConnect(io, PORT) {
  
       //db.foo.find().sort({_id:1}).limit(50);
       //get objectid for user and channel
-      let channelId = new ObjectId(channel_Id);
+    
       let userId = new ObjectId(user_Id);
       console.log("NEXT")
       let user = await usersColl.findOne(
@@ -37,14 +40,15 @@ export function socketConnect(io, PORT) {
       socket.imagePath = user.imagePath
       socket.username = user.username
       socket.user_Id = userId
+      socket.imagePath = user.imagePath
       //emit connection message to current user
-      socket.emit("message", formatMessage("CHATBOT", `Welcome ${user.username}`));
+      socket.emit("message", formatMessage(CHATBOT_IMG, "CHATBOT", `Welcome ${user.username}`));
       //tell all connected socket in roomed that the new user joined
       socket.broadcast
-        .to(channel)
+        .to(socket.channel)
         .emit(
           "message",
-          formatMessage("CHATBOT", `${user.username} has joined the channel`)
+          formatMessage(CHATBOT_IMG, "CHATBOT", `${user.username} has joined the channel`)
         );
     });
 
@@ -53,8 +57,11 @@ export function socketConnect(io, PORT) {
 
     //When message recieved emit to all sockets
     socket.on("message", (message) => {
-      io.to(socket.channel).emit("message", formatMessage(socket.username, message));
-      messageColl.insertOne({channelId:socket.channel_Id, senderId: socket.user_Id, message: message, senderUsername:socket.username, imagePath: socket.imagePath})
+      io.to(socket.channel).emit("message", formatMessage(socket.imagePath,socket.username, message));
+
+      let channelId = new ObjectId(socket.channel);
+
+      messageColl.insertOne({channelId:channelId, senderId: socket.user_Id, message: message, senderUsername:socket.username, imagePath: socket.imagePath})
     });
     socket.on("leaveChannel", (channel_Id) =>{
       socket.leave(channel_Id)
@@ -65,8 +72,9 @@ export function socketConnect(io, PORT) {
     // })
   });
 }
-function formatMessage(senderUsername, message) {
+function formatMessage(imagePath, senderUsername, message) {
   return {
+    imagePath,
     senderUsername,
     message,
   };

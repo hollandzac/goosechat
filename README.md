@@ -1,13 +1,12 @@
 # Goosechat
 
-##TODO
+## Rest API
+A RESTFUL API for the goosechat frontend
 
+## Groups
 
--Style frontend
-
--Document, Apis
-
--Send images
--Add testing
-
--profile pic next to image
+|     URL     | METHOD | Paramaters |     Success     | Error |
+|:-----------:|:------:|:----------:|:---------------:|:-----:|
+| /api/groups |   GET  |    null    | 200, All groups |  400  |
+|             |        |            |                 |       |
+|             |        |            |                 |       |

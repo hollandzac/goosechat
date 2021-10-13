@@ -43,13 +43,13 @@ export class ChannelComponent implements OnInit {
     this.initSocketConnection()
  
   }
-  getUserImg(){
 
-  }
+  //Initialize Socket Connection and then join this socket to the channel
   private initSocketConnection(): void{
     this.socketService.initSocket()
     this.socketService.joinChannel(this.channel_Id, this.auth.user?._id!)
     this.socketService.onMessage().subscribe( message => {
+      console.log(message)
       this.messages.push(message)
     })
   }

@@ -21,6 +21,8 @@ export class GroupComponent implements OnInit {
   public newDescription: string = '';
   public channelError: string | null = null;
   public channelIdx:number = -1
+  public groupName: string
+  public description: string
 
   constructor(
     public groupsDataService: GroupDataService,
@@ -32,20 +34,25 @@ export class GroupComponent implements OnInit {
   ngOnInit(): void {
     const group_Id: string | null =
       this.route.snapshot.paramMap.get('group_Id');
-
     if (group_Id) {
       this.group_Id = group_Id;
       this.getGroup(group_Id);
     }
   }
-
+  //Gets selected group
   getGroup(group_Id: string): void {
     this.groupsDataService.getGroup(group_Id).subscribe((group) => {
-      this.group = group;
+      if(group){
+        this.group = group;
+
+      }
       this.channelToEdit = null;
+      this.groupName = group.groupName
+      this.description = group.description || "Unknown"
     });
   }
 
+  //removes selcted channel
   deleteChannel(channel_Id: string | undefined) {
     console.log(channel_Id);
     if (channel_Id) {

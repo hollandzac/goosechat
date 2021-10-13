@@ -1,4 +1,6 @@
+import { HttpClientModule } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 
 import { UpdateGroupComponent } from './update-group.component';
 
@@ -8,6 +10,7 @@ describe('UpdateGroupComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [RouterTestingModule,HttpClientModule],
       declarations: [ UpdateGroupComponent ]
     })
     .compileComponents();

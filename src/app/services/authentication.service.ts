@@ -12,6 +12,7 @@ export class AuthenticationService {
   public user: User | undefined
   constructor( private httpClient: HttpClient) { }
 
+  //Login checks authentication returns the authentcated user
   login(username: string, password: string){
     return this.httpClient.post<User>("http://localhost:3000/api/login", {username, password})
   }
@@ -23,6 +24,9 @@ export class AuthenticationService {
     this.user = undefined
     localStorage.removeItem('currentUser')
   }
+  /*
+  * checks if user is already authenticated
+  */
   isAuthenticated(): boolean{
     if(this.user){
       return true
@@ -41,6 +45,9 @@ export class AuthenticationService {
   isAdmin(){
     return this.user?.groupAdmin || this.user?.superAdmin
   }
+  /**
+   * Checks to see if a user is and admin or assistant on this group 
+  */
   isAssistant(users: Array<string>): boolean{
     let userId = this.user?._id
     if (this.isAdmin()){
@@ -51,6 +58,9 @@ export class AuthenticationService {
     }
     return false
   }
+  /*
+  * checks if user can view group or channel
+  */
   isUser(users: Array<string>): boolean{
     if (this.isAdmin()){
       return true

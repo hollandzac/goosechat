@@ -8,7 +8,10 @@ export const router = express.Router();
  * @type{import('mongodb').Collection} coll
  */
 
-///Get all groups
+/**
+ * Get all groups
+ * Returns a JSON array of all group objects
+ */
 router.get("/groups", async (req, res) => {
   const coll = getDb().collection("groups");
   try {
@@ -19,22 +22,29 @@ router.get("/groups", async (req, res) => {
   }
 });
 
-//Get a group
+/**
+ * Get a group
+ * Retruns a single group matching id parameter
+ */
 router.get("/groups/:id", async (req, res) => {
+  console.log(req.params.id)
   try {
     const coll = getDb().collection("groups");
     let group = await findGroup(coll, req.params.id);
     if (!group) {
       throw "No group found";
     }
-    console.log(group);
     res.status(200).send(group);
   } catch (err) {
+    console.log(err)
     res.status(404).send(err);
   }
 });
 
-//Add a group
+/**
+ * Add a group
+ * Returns 201 with location of added resource enpoint
+ */
 router.post("/groups", async (req, res) => {
   try {
     if (!req.body) {
@@ -42,7 +52,6 @@ router.post("/groups", async (req, res) => {
     }
     const coll = getDb().collection("groups");
     const newGroup = req.body;
-    console.log(newGroup);
 
     if (await coll.findOne({ groupName: newGroup.groupName })) {
       res.status(409).send("Group with that name exits");
@@ -57,6 +66,12 @@ router.post("/groups", async (req, res) => {
     res.status(404).send(err);
   }
 });
+
+/**
+ * Add users to group
+ * Returns userID
+ */
+
 router.put("/groups/:id/users", async (req, res) => {
   let result = await addUser(req, false);
   if (result.err) {
@@ -112,7 +127,10 @@ router.delete("/groups/:id/users/:username", async (req, res) => {
   }
 });
 
-//Update a group
+/**
+ * Update a group
+ * Retrurns 204 No Content on success
+ */
 router.put("/groups/:id", async (req, res) => {
   try {
     if (!req.body) {
@@ -144,7 +162,9 @@ router.put("/groups/:id", async (req, res) => {
   }
 });
 
-//Delete a group
+/**
+ * Deletes a group with ID
+ */
 router.delete("/groups/:id", async (req, res) => {
   try {
     const coll = getDb().collection("groups");
@@ -163,6 +183,7 @@ router.delete("/groups/:id", async (req, res) => {
 });
 
 /**
+ * Finds a returns a group matching ID
  * @param {import('mongodb').Collection} coll
  */
 
@@ -170,11 +191,27 @@ export async function findGroup(coll, id) {
   let groupId = new ObjectId(id);
   return await coll.findOne({ _id: groupId });
 }
+/**
+ * Finds and returns a user with username
+ * 
+ * @param {string} username 
+ * @returns 
+ */
 export async function getUserId(username) {
   let coll = getDb().collection("users");
   return await coll.findOne({ username: username }, { projection: { _id: 1 } });
 }
 
+
+/**
+ * 
+ * Adds a user to a channel and group
+ * 
+ * 
+ * @param {*} req the req from HTTP 
+ * @param {boolean} isAssistant assistant flag
+ * @returns errors
+ */
 async function addUser(req, isAssistant) {
   try {
     if (!req.body) {
@@ -188,7 +225,9 @@ async function addUser(req, isAssistant) {
 
     const updateUser = req.body;
     let userId = await getUserId(updateUser.username);
+    //Checks if user exists
     if (userId) {
+      // If user is to be assitant then add otherwise eroor
       if (isAssistant) {
         let result = await coll.findOne({
           _id: group._id,
@@ -197,6 +236,7 @@ async function addUser(req, isAssistant) {
         if (result) {
           throw "User already a assistant";
         }
+        //Add user to database
         await coll.updateOne(
           { _id: group._id },
           { $push: { assistants: userId._id } }
